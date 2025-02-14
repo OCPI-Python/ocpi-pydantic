@@ -1,0 +1,45 @@
+[project]
+name = "ocpi-pydantic"
+version = "0.1.0"
+description = "OCPI Pydantic models"
+authors = [{ name = "Leon", email = "leon0824@gmail.com" }]
+dependencies = ["pydantic-settings>=2.7.1", "mimesis>=18.0.0"]
+requires-python = ">=3.9"
+readme = "README.md"
+license = { text = "MIT" }
+
+[project.urls]
+Homepage = "https://github.com/Leon0824/ocpi-pydantic"
+
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+
+[tool.pdm]
+distribution = true
+
+
+[tool.pytest.ini_options]
+addopts = """
+--exitfirst
+--pdb
+--pdbcls=IPython.terminal.debugger:TerminalPdb
+--cov
+--cov-report=term
+--cov-report=html
+--cov-report=xml
+--no-cov-on-fail
+"""
+asyncio_default_fixture_loop_scope = "function"
+log_level = "DEBUG"
+
+
+[dependency-groups]
+dev = [
+  "ipykernel>=6.29.5",
+  "pytest-coverage>=0.0",
+  "ipython>=8.32.0",
+  "loguru>=0.7.3",
+]
