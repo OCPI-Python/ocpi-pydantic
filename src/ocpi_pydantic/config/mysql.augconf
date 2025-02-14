@@ -1,3 +1,0 @@
-set /files/etc/mysql/my.cnf/target[3]/bind-address 0.0.0.0
-
-save

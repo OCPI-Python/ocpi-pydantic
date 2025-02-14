@@ -38,3 +38,5 @@ Temporary Items
 
 files/ssl/*
 files/ssh/*
+.pdm-python
+dist/

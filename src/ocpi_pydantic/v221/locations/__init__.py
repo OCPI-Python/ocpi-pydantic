@@ -1,0 +1,535 @@
+from datetime import datetime, timezone
+from enum import Enum
+from typing import ClassVar
+
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
+
+from ocpi_pydantic.v221.base import OcpiDisplayText, OcpiGeoLocation, OcpiImage
+from ocpi_pydantic.v221.locations.evse import OcpiEvse
+from ocpi_pydantic.v221.tokens import OcpiTokenTypeEnum
+
+
+
+class OcpiPublishTokenType(BaseModel):
+    '''
+    OCPI 8.4.20. PublishTokenType class
+
+    - uid、visual_number、group_id 至少要填一欄位。
+    - 如果有 uid，就不該有 type。
+    - 如果有 visual_number，就不該有 issuer。
+    '''
+    uid: str | None = Field(None, description='Unique ID by which this Token can be identified.', max_length=36)
+    type: OcpiTokenTypeEnum | None = Field(None, description='Type of the token.')
+    visual_number: str | None = Field(None, description='Visual readable number/identification as printed on the Token (RFID card).', max_length=64)
+    issuer: str | None = Field(None, description='Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.', max_length=64)
+    group_id: str | None = Field(None, description='This ID groups a couple of tokens.')
+
+
+
+class OcpiBusinessDetails(BaseModel):
+    '''
+    OCPI 8.4.2 BusinessDetails class
+    '''
+    name: str = Field(description='Name of the operator.')
+    website: str | None = Field(None, description='Link to the operator’s website.')
+    logo: OcpiImage | None = Field(None, description='Image link to the operator’s logo.')
+
+    _example: ClassVar[dict] = {
+        'name': 'WinCharge',
+        'website': 'https://www.wincharge.com.tw',
+        # 'logo': OcpiImage._example,
+    }
+    model_config = ConfigDict(json_schema_extra={'examples': [_example]})
+
+
+
+
+class OcpiRegularHours(BaseModel):
+    '''
+    OCPI 8.4.21. REgularHours class
+    '''
+    weekday: int = Field(description='Number of day in the week, from Monday (1) till Sunday (7)', min_length=1, max_length=1)
+    period_begin: str = Field(description='Begin of the regular period, in local time, given in hours and minutes.')
+    period_end: str = Field(description='End of the regular period, in local time, syntax as for period_begin.')
+
+    _example: ClassVar[dict] = {"weekday": 1, "period_begin": "08:00", "period_end": "20:00"}
+    model_config = ConfigDict(json_schema_extra={'examples': [_example]})
+
+
+
+class OcpiExceptionalPeriod(BaseModel):
+    '''
+    OCPI ExceptionalPeriod class
+    '''
+    period_begin: AwareDatetime = Field(description='Begin of the exception. In UTC, time_zone field can be used to convert to local time.')
+    period_end: AwareDatetime = Field(description='End of the exception. In UTC, time_zone field can be used to convert to local time.')
+
+
+
+class OcpiHours(BaseModel):
+    '''
+    OCPI 8.4.14. Hours class
+    '''
+    twentyfourseven: bool = Field(description='True to represent 24 hours a day and 7 days a week, except the given exceptions.')
+    regular_hours: list[OcpiRegularHours] = Field([], description='Regular hours, weekday-based.')
+    exceptional_openings: list[OcpiExceptionalPeriod] = Field([], description='Exceptions for specified calendar dates, time-range based.')
+    exceptional_closings: list[OcpiExceptionalPeriod] = Field([], description='Exceptions for specified calendar dates, time-range based.')
+
+    _examples: ClassVar[list[dict]] = [
+        # 8.4.14.1. Example: 24/7 open with exceptional closing.
+        {"twentyfourseven": True, "exceptional_closings": [{"period_begin": "2018-12-25T03:00:00Z", "period_end": "2018-12-25T05:00:00Z"}]},
+        # 8.4.14.2. Example: Opening Hours with exceptional closing.
+        {
+            "twentyfourseven": False,
+            "regular_hours": [
+                {"weekday": 1, "period_begin": "01:00", "period_end": "06:00"},
+                {"weekday": 2, "period_begin": "01:00", "period_end": "06:00"},
+            ],
+            "exceptional_closings": [{"period_begin": "2018-12-25T03:00:00Z", "period_end": "2018-12-25T05:00:00Z"}],
+        },
+        # 8.4.14.3. Example: Opening Hours with exceptional opening.
+        {
+            "twentyfourseven": False,
+            "regular_hours": [
+                {"weekday": 1, "period_begin": "00:00", "period_end": "04:00"},
+                {"weekday": 2, "period_begin": "00:00", "period_end": "04:00"}
+            ],
+            "exceptional_openings": [{"period_begin": "2018-12-25T05:00:00Z", "period_end": "2018-12-25T06:00:00Z"}],
+        },
+    ]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
+class AdditionalGeoLocation(BaseModel):
+    '''
+    OCPI 8.4.1. AdditionalGeoLoation class
+
+    - WGS 84 坐標系。
+    '''
+    latitude: str = Field(description='Latitude of the point in decimal degree.', max_length=10)
+    longitude: str = Field(description='Longitude of the point in decimal degree.', max_length=11)
+    name: OcpiDisplayText | None = Field(None, description='Name of the point in local language or as written at the location.')
+
+    _example: ClassVar[dict] = {"latitude": "51.047599", "longitude": "3.729944"}
+    model_config = ConfigDict(json_schema_extra={'examples': [_example]})
+
+
+
+class OcpiParkingTypeEnum(str, Enum):
+    '''
+    OCPI 8.4.18. ParkingType enum
+    '''
+    ALONG_MOTORWAY  = 'ALONG_MOTORWAY' # Location on a parking facility/rest area along a motorway, freeway, interstate, highway etc.
+    PARKING_GARAGE = 'PARKING_GARAGE' # Multistorey car park.
+    PARKING_LOT = 'PARKING_LOT' # A cleared area that is intended for parking vehicles, i.e. at super markets, bars, etc.
+    ON_DRIVEWAY = 'ON_DRIVEWAY' # Location is on the driveway of a house/building.
+    ON_STREET = 'ON_STREET' # Parking in public space along a street.
+    UNDERGROUND_GARAGE = 'UNDERGROUND_GARAGE' # Multistorey car park, mainly underground.
+
+
+
+class OcpiFacilityEnum(str, Enum):
+    '''
+    OCPI 8.4.12. Facility enum
+    '''
+    HOTEL = 'HOTEL'
+    RESTAURANT = 'RESTAURANT'
+    CAFE = 'CAFE'
+    MALL = 'MALL'
+    SUPERMARKET = 'SUPERMARKET'
+    SPORT = 'SPORT'
+    RECREATION_AREA = 'RECREATION_AREA'
+    NATURE = 'NATURE'
+    MUSEUM = 'MUSEUM'
+    BIKE_SHARING = 'BIKE_SHARING'
+    BUS_STOP = 'BUS_STOP'
+    TAXI_STAND = 'TAXI_STAND'
+    TRAM_STOP = 'TRAM_STOP'
+    METRO_STATION = 'METRO_STATION'
+    TRAIN_STATION = 'TRAIN_STATION'
+    AIRPORT = 'AIRPORT'
+    PARKING_LOT = 'PARKING_LOT'
+    CARPOOL_PARKING = 'CARPOOL_PARKING'
+    FUEL_STATION = 'FUEL_STATION'
+    WIFI = 'WIFI'
+
+
+
+class OcpiEnergySourceCategoryEnum(str, Enum):
+    '''
+    OCPI 8.4.8. EnergySourceCategory enum
+    '''
+    NUCLEAR = 'NUCLEAR'
+    GENERAL_FOSSIL = 'GENERAL_FOSSIL'
+    COAL = 'COAL'
+    GAS = 'GAS'
+    GENERAL_GREEN = 'GENERAL_GREEN'
+    SOLAR = 'SOLAR'
+    WIND = 'WIND'
+    WATER = 'WATER'
+
+
+
+class OcpiEnergySource(BaseModel): 
+    '''
+    OCPI 8.4.7. EnergySource class
+    '''
+    source: OcpiEnergySourceCategoryEnum = Field(description='The type of energy source.')
+    percentage: int = Field(description='Percentage of this source (0-100) in the mix.')
+
+
+
+class OcpiEnvironmentalImpactCategoryEnum(str, Enum):
+    '''
+    OCPI 8.4.10. EnvironmentalImpactCategory enum
+    '''
+    NUCLEAR_WASTE = 'NUCLEAR_WASTE' # Produced nuclear waste in grams per kilowatthour.
+    CARBON_DIOXIDE = 'CARBON_DIOXIDE' # Exhausted carbon dioxide in grams per kilowatthour.
+
+
+
+class OcpiEnvironmentalImpact(BaseModel):
+    '''
+    OCPI 8.4.9. EnvironmentalImpact class
+    '''
+    category: OcpiEnvironmentalImpactCategoryEnum = Field(description='The environmental impact category of this value.')
+    amount: float = Field(description='Amount of this portion in g/kWh.')
+
+
+
+class OcpiEnergyMix(BaseModel):
+    '''
+    OCPI 8.4.6. EnergyMix class
+    '''
+    is_green_energy: bool = Field(description='True if 100% from regenerative sources. (CO2 and nuclear waste is zero)')
+    energy_sources: list[OcpiEnergySource] = Field([], description='Key-value pairs (enum + percentage) of energy sources of this location’s tariff.')
+    environ_impact: list[OcpiEnvironmentalImpact] = Field([], description='Key-value pairs (enum + percentage) of nuclear waste and CO2 exhaust of this location’s tariff.')
+    supplier_name: str | None = Field(None, description='Name of the energy supplier, delivering the energy for this location or tariff.', max_length=64)
+    evergy_product_name: str | None = Field(None, description='Name of the energy suppliers product/tariff plan used at this location.', max_length=64)
+
+    _examples: ClassVar[list[dict]] = [
+        # Simple
+        {"is_green_energy": True},
+        # Tariff energy provider name
+        {"is_green_energy": True, "supplier_name": "Greenpeace Energy eG", "energy_product_name": "eco-power"},
+        # Complete
+        {
+            "is_green_energy": False,
+            "energy_sources": [
+                { "source": "GENERAL_GREEN", "percentage": 35.9 },
+                { "source": "GAS", "percentage": 6.3 },
+                { "source": "COAL", "percentage": 33.2 },
+                { "source": "GENERAL_FOSSIL", "percentage": 2.9 },
+                { "source": "NUCLEAR", "percentage": 21.7 },
+            ],
+            "environ_impact": [
+                { "category": "NUCLEAR_WASTE", "amount": 0.0006 },
+                { "category": "CARBON_DIOXIDE", "amount": 372 },
+            ],
+            "supplier_name": "E.ON Energy Deutschland",
+            "energy_product_name": "E.ON DirektStrom eco",
+        },
+    ]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
+class OcpiLocation(BaseModel):
+    '''
+    OCPI 8.3.1. Location Object
+    '''
+
+    country_code: str = Field('TW', description="ISO-3166 alpha-2 country code of the CPO that 'owns' this Location.", min_length=2, max_length=2)
+    party_id: str = Field(description="ID of the CPO that 'owns' this Location (following the ISO-15118 standard).", min_length=3, max_length=3)
+    id: str = Field(description='Uniquely identifies the location within the CPOs platform (and suboperator platforms).', max_length=36)
+    name: str | None = Field(None, description='Display name of the location.')
+
+    publish: bool = Field(description='Defines if a Location may be published on an website or app etc.')
+    publish_allowed_to: list[OcpiPublishTokenType] = Field([], description='This field may only be used when the publish field is set to false.')
+
+    time_zone: str = Field('Asia/Taipei', description='One of IANA tzdata’s TZ-values representing the time zone of the location.')
+    coordinates: OcpiGeoLocation = Field(description='Coordinates of the location.')
+    postal_code: str | None = Field(None, description='Postal code of the location, may only be omitted when the location has no postal code.', max_length=10)
+    country: str = Field('TWN', description='ISO 3166-1 alpha-3 code for the country of this location.', max_length=3)
+    state: str | None = Field(None, description='State or province of the location, only to be used when relevant.', max_length=20)
+    city: str = Field(description='City or town.', max_length=45)
+    address: str = Field(description='Street/block name and house number if available.', max_length=45)
+    opening_times: OcpiHours | None = Field(None, description='The times when the EVSEs at the location can be accessed for charging.')
+    charging_when_closed: bool | None = Field(True, description='Indicates if the EVSEs are still charging outside the opening hours of the location.')
+
+    related_locations: list[AdditionalGeoLocation] = Field([], description='Geographical location of related points relevant to the user.')
+    parking_type: OcpiParkingTypeEnum | None = Field(None, description='The general type of parking at the charge point location.')
+    evses: list[OcpiEvse] = Field([], description='List of EVSEs that belong to this Location.')
+    directions: list[OcpiDisplayText] = Field([], description='Human-readable directions on how to reach the location.')
+    operator: OcpiBusinessDetails | None = Field(None, description='Information of the operator.')
+    suboperator: OcpiBusinessDetails | None = Field(None, description='Information of the suboperator if available.')
+    owner: OcpiBusinessDetails | None = Field(None, description='Information of the owner if available.')
+    facilities: list[OcpiFacilityEnum] = Field([], description='Optional list of facilities this charging location directly belongs to.')
+    images: list[OcpiImage] = Field([], description='Links to images related to the location such as photos or logos.')
+    energy_mix: OcpiEnergyMix | None = Field(None, description='Details on the energy supplied at this location.')
+    last_updated: AwareDatetime = Field(
+        default_factory=lambda: datetime.now(timezone.utc).replace(microsecond=0),
+        description='Timestamp when this Location or one of its EVSEs or Connectors were last updated (or created).'
+    )
+
+    _examples: ClassVar[list[dict]] = [
+        { # 8.3.1.1. Example public charging location
+            "country_code": "BE",
+            "party_id": "BEC",
+            "id": "LOC1",
+            "name": "Gent Zuid",
+
+            "publish": True,
+
+            "time_zone": "Europe/Brussels",
+            "coordinates": {"latitude": "51.047599", "longitude": "3.729944"},
+            "postal_code": "9000",
+            "country": "BEL",
+            "city": "Gent",
+            "address": "F.Rooseveltlaan 3A",
+
+            "parking_type": "ON_STREET",
+            "evses": [
+                {
+                    "uid": "3256",
+                    "evse_id": "BE*BEC*E041503001",
+                    "status": "AVAILABLE",
+                    "capabilities": ["RESERVABLE"],
+                    "connectors": [
+                        {
+                            "id": "1",
+                            "standard": "IEC_62196_T2",
+                            "format": "CABLE",
+                            "power_type": "AC_3_PHASE",
+                            "max_voltage": 220,
+                            "max_amperage": 16,
+                            "tariff_ids": ["11"],
+                            "last_updated": "2015-03-16T10:10:02Z"
+                        },
+                        {
+                            "id": "2",
+                            "standard": "IEC_62196_T2",
+                            "format": "SOCKET",
+                            "power_type": "AC_3_PHASE",
+                            "max_voltage": 220,
+                            "max_amperage": 16,
+                            "tariff_ids": ["13"],
+                            "last_updated": "2015-03-18T08:12:01Z"
+                        }
+                    ],
+                        "physical_reference": "1",
+                        "floor_level": "-1",
+                        "last_updated": "2015-06-28T08:12:01Z"
+                    },
+                {
+                    "uid": "3257",
+                    "evse_id": "BE*BEC*E041503002",
+                    "status": "RESERVED",
+                    "capabilities": [
+                        "RESERVABLE"
+                    ],
+                    "connectors": [{
+                        "id": "1",
+                        "standard": "IEC_62196_T2",
+                        "format": "SOCKET",
+                        "power_type": "AC_3_PHASE",
+                        "max_voltage": 220,
+                        "max_amperage": 16,
+                        "tariff_ids": ["12"],
+                        "last_updated": "2015-06-29T20:39:09Z"
+                    }],
+                    "physical_reference": "2",
+                    "floor_level": "-2",
+                    "last_updated": "2015-06-29T20:39:09Z"
+                }
+            ],
+            "operator": {"name": "BeCharged"},
+            "last_updated": "2015-06-29T20:39:09Z"
+        },
+        { # 8.3.1.2. Example destination charging location
+            "country_code": "NL",
+            "party_id": "ALF",
+            "id": "3e7b39c2-10d0-4138-a8b3-8509a25f9920",
+            "name": "ihomer",
+
+            "publish": True,
+
+            "time_zone": "Europe/Amsterdam",
+            "coordinates": {"latitude": "51.562787", "longitude": "4.638975"},
+            "postal_code": "4876 BS",
+            "country": "NLD",
+            "city": "Etten-Leur",
+            "address": "Tamboerijn 7",
+
+            "parking_type": "PARKING_LOT",
+            "evses": [{
+                "uid": "fd855359-bc81-47bb-bb89-849ae3dac89e",
+                "evse_id": "NL*ALF*E000000001",
+                "status": "AVAILABLE",
+                "connectors": [{
+                    "id": "1",
+                    "standard": "IEC_62196_T2",
+                    "format": "SOCKET",
+                    "power_type": "AC_3_PHASE",
+                    "max_voltage": 220,
+                    "max_amperage": 16,
+                    "last_updated": "2019-07-01T12:12:11Z"
+                }],
+                "parking_restrictions": [ "CUSTOMERS" ],
+                "last_updated": "2019-07-01T12:12:11Z",
+            }],
+            "last_updated": "2019-07-01T12:12:11Z",
+        },
+        { # 8.3.1.3. Example destination charging location not published, but paid guest usage possible
+            "country_code": "NL",
+            "party_id": "ALF",
+            "id": "3e7b39c2-10d0-4138-a8b3-8509a25f9920",
+            "name": "ihomer",
+
+            "publish": False,
+
+            "time_zone": "Europe/Amsterdam",
+            "coordinates": {"latitude": "51.562787","longitude": "4.638975"},
+            "postal_code": "4876 BS",
+            "country": "NLD",
+            "city": "Etten-Leur",
+            "address": "Tamboerijn 7",
+
+            "evses": [{
+                "uid": "fd855359-bc81-47bb-bb89-849ae3dac89e",
+                "evse_id": "NL*ALF*E000000001",
+                "status": "AVAILABLE",
+                "connectors": [{
+                    "id": "1",
+                    "standard": "IEC_62196_T2",
+                    "format": "SOCKET",
+                    "power_type": "AC_3_PHASE",
+                    "max_voltage": 220,
+                    "max_amperage": 16,
+                    "last_updated": "2019-07-01T12:12:11Z",
+                }],
+                "parking_restrictions": [ "CUSTOMERS" ],
+                "last_updated": "2019-07-01T12:12:11Z",
+            }],
+            "last_updated": "2019-07-01T12:12:11Z"
+        },
+        { # 8.3.1.4. Example charging location with limited visibility
+            "country_code": "NL",
+            "party_id": "ALL",
+            "id": "f76c2e0c-a6ef-4f67-bf23-6a187e5ca0e0",
+            "name": "Water State",
+
+            "publish": False,
+            "publish_allowed_to": [
+                {"visual_number": "12345-67", "issuer": "NewMotion"},
+                {"visual_number": "0055375624", "issuer": "ANWB"},
+                {"uid": "12345678905880", "type": "RFID"},
+            ],
+
+            "time_zone": "Europe/Amsterdam",
+            "coordinates": {"latitude": "53.213763", "longitude": "5.804638"},
+            "postal_code": "8923 EM",
+            "country": "NLD",
+            "city": "Leeuwarden",
+            "address": "Taco van der Veenplein 12",
+
+            "parking_type": "UNDERGROUND_GARAGE",
+            "evses": [{
+                "uid": "8c1b3487-61ac-40a7-a367-21eee99dbd90",
+                "evse_id": "NL*ALL*EGO0000013",
+                "status": "AVAILABLE",
+                "connectors": [{
+                    "id": "1",
+                    "standard": "IEC_62196_T2",
+                    "format": "SOCKET",
+                    "power_type": "AC_3_PHASE",
+                    "max_voltage": 230,
+                    "max_amperage": 16,
+                    "last_updated": "2019-09-27T00:19:45Z",
+                }],
+                "last_updated": "2019-09-27T00:19:45Z"
+            }],
+            "last_updated": "2019-09-27T00:19:45Z",
+        },
+        { # 8.3.1.5. Example private charge point with eMSP app control
+            "country_code": "DE",
+            "party_id": "ALL",
+            "id": "a5295927-09b9-4a71-b4b9-a5fffdfa0b77",
+
+            "publish": False,
+            "publish_allowed_to": [{"visual_number": "0123456-99", "issuer": "MoveMove"}],
+
+            "time_zone": "Europe/Berlin",
+            "coordinates": {"latitude": "50.931826", "longitude": "6.964043"},
+            "postal_code": "50931",
+            "country": "DEU",
+            "city": "Köln",
+            "address": "Krautwigstraße 283A",
+
+            "parking_type": "ON_DRIVEWAY",
+            "evses": [{
+                "uid": "4534ad5f-45be-428b-bfd0-fa489dda932d",
+                "evse_id": "DE*ALL*EGO0000001",
+                "status": "AVAILABLE",
+                "connectors": [{
+                    "id": "1",
+                    "standard": "IEC_62196_T2",
+                    "format": "SOCKET",
+                    "power_type": "AC_1_PHASE",
+                    "max_voltage": 230,
+                    "max_amperage": 8,
+                    "last_updated": "2019-04-05T17:17:56Z"
+                }],
+                "last_updated": "2019-04-05T17:17:56Z",
+            }],
+            "last_updated": "2019-04-05T17:17:56Z"
+        },
+        { # 8.3.1.6. Example charge point in a parking garage with opening hours
+            "country_code": "SE",
+            "party_id": "EVC",
+            "id": "cbb0df21-d17d-40ba-a4aa-dc588c8f98cb",
+            "name": "P-Huset Leonard",
+
+            "publish": True,
+
+            "time_zone": "Europe/Stockholm",
+            "coordinates": {"latitude": "55.590325", "longitude": "13.008307"},
+            "postal_code": "214 26",
+            "country": "SWE",
+            "city": "Malmö",
+            "address": "Claesgatan 6",
+            "opening_times": {
+                "twentyfourseven": False,
+                "regular_hours": [
+                    {"weekday": 1, "period_begin": "07:00", "period_end": "18:00"},
+                    {"weekday": 2, "period_begin": "07:00", "period_end": "18:00"},
+                    {"weekday": 3, "period_begin": "07:00", "period_end": "18:00"},
+                    {"weekday": 4, "period_begin": "07:00", "period_end": "18:00"},
+                    {"weekday": 5, "period_begin": "07:00", "period_end": "18:00"},
+                    {"weekday": 6, "period_begin": "07:00", "period_end": "18:00"},
+                    {"weekday": 7, "period_begin": "07:00", "period_end": "18:00"},
+                ],
+            },
+            "charging_when_closed": True,
+
+            "parking_type": "PARKING_GARAGE",
+            "evses": [{
+                "uid": "eccb8dd9-4189-433e-b100-cc0945dd17dc",
+                "evse_id": "SE*EVC*E000000123",
+                "status": "AVAILABLE",
+                "connectors": [{
+                    "id": "1",
+                    "standard": "IEC_62196_T2",
+                    "format": "SOCKET",
+                    "power_type": "AC_3_PHASE",
+                    "max_voltage": 230,
+                    "max_amperage": 32,
+                    "last_updated": "2017-03-07T02:21:22Z",
+                }],
+                "last_updated": "2017-03-07T02:21:22Z"
+            }],
+            "last_updated": "2017-03-07T02:21:22Z"
+        },
+    ]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
