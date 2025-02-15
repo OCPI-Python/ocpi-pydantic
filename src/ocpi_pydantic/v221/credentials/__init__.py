@@ -3,7 +3,8 @@ from typing import ClassVar
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
-from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiPartyRoleEnum
+from ocpi_pydantic.v221.base import OcpiBaseResponse
+from ocpi_pydantic.v221.enum import OcpiPartyRoleEnum
 from ocpi_pydantic.v221.locations import OcpiBusinessDetails
 
 

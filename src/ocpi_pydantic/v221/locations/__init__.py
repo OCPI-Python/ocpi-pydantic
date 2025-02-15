@@ -1,12 +1,11 @@
 from datetime import datetime, timezone
-from enum import Enum
 from typing import ClassVar
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 from ocpi_pydantic.v221.base import OcpiDisplayText, OcpiGeoLocation, OcpiImage
+from ocpi_pydantic.v221.enum import OcpiEnergySourceCategoryEnum, OcpiEnvironmentalImpactCategoryEnum, OcpiFacilityEnum, OcpiParkingTypeEnum, OcpiTokenTypeEnum
 from ocpi_pydantic.v221.locations.evse import OcpiEvse
-from ocpi_pydantic.v221.tokens import OcpiTokenTypeEnum
 
 
 
@@ -116,76 +115,12 @@ class AdditionalGeoLocation(BaseModel):
 
 
 
-class OcpiParkingTypeEnum(str, Enum):
-    '''
-    OCPI 8.4.18. ParkingType enum
-    '''
-    ALONG_MOTORWAY  = 'ALONG_MOTORWAY' # Location on a parking facility/rest area along a motorway, freeway, interstate, highway etc.
-    PARKING_GARAGE = 'PARKING_GARAGE' # Multistorey car park.
-    PARKING_LOT = 'PARKING_LOT' # A cleared area that is intended for parking vehicles, i.e. at super markets, bars, etc.
-    ON_DRIVEWAY = 'ON_DRIVEWAY' # Location is on the driveway of a house/building.
-    ON_STREET = 'ON_STREET' # Parking in public space along a street.
-    UNDERGROUND_GARAGE = 'UNDERGROUND_GARAGE' # Multistorey car park, mainly underground.
-
-
-
-class OcpiFacilityEnum(str, Enum):
-    '''
-    OCPI 8.4.12. Facility enum
-    '''
-    HOTEL = 'HOTEL'
-    RESTAURANT = 'RESTAURANT'
-    CAFE = 'CAFE'
-    MALL = 'MALL'
-    SUPERMARKET = 'SUPERMARKET'
-    SPORT = 'SPORT'
-    RECREATION_AREA = 'RECREATION_AREA'
-    NATURE = 'NATURE'
-    MUSEUM = 'MUSEUM'
-    BIKE_SHARING = 'BIKE_SHARING'
-    BUS_STOP = 'BUS_STOP'
-    TAXI_STAND = 'TAXI_STAND'
-    TRAM_STOP = 'TRAM_STOP'
-    METRO_STATION = 'METRO_STATION'
-    TRAIN_STATION = 'TRAIN_STATION'
-    AIRPORT = 'AIRPORT'
-    PARKING_LOT = 'PARKING_LOT'
-    CARPOOL_PARKING = 'CARPOOL_PARKING'
-    FUEL_STATION = 'FUEL_STATION'
-    WIFI = 'WIFI'
-
-
-
-class OcpiEnergySourceCategoryEnum(str, Enum):
-    '''
-    OCPI 8.4.8. EnergySourceCategory enum
-    '''
-    NUCLEAR = 'NUCLEAR'
-    GENERAL_FOSSIL = 'GENERAL_FOSSIL'
-    COAL = 'COAL'
-    GAS = 'GAS'
-    GENERAL_GREEN = 'GENERAL_GREEN'
-    SOLAR = 'SOLAR'
-    WIND = 'WIND'
-    WATER = 'WATER'
-
-
-
 class OcpiEnergySource(BaseModel): 
     '''
     OCPI 8.4.7. EnergySource class
     '''
     source: OcpiEnergySourceCategoryEnum = Field(description='The type of energy source.')
     percentage: int = Field(description='Percentage of this source (0-100) in the mix.')
-
-
-
-class OcpiEnvironmentalImpactCategoryEnum(str, Enum):
-    '''
-    OCPI 8.4.10. EnvironmentalImpactCategory enum
-    '''
-    NUCLEAR_WASTE = 'NUCLEAR_WASTE' # Produced nuclear waste in grams per kilowatthour.
-    CARBON_DIOXIDE = 'CARBON_DIOXIDE' # Exhausted carbon dioxide in grams per kilowatthour.
 
 
 

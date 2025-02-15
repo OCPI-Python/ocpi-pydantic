@@ -1,48 +1,9 @@
 from datetime import datetime, timezone
-from enum import Enum, IntEnum
 from typing import ClassVar, Generic, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
-
-
-class OcpiStatus(IntEnum):
-    SUCCESS = 1000
-    
-    CLIENT_ERROR = 2000 
-    INVALID_OR_MISSING_PARAMETERS = 2001 # for example: missing last_updated field in a PATCH request
-    NOT_ENOUGH_INFORMATION = 2002 # for example: Authorization request with too little information
-    UNKNOWN_LOCATION = 2003 # for example: Command: START_SESSION with unknown location
-    UNKNOWN_TOKEN = 2004 # for example: 'real-time' authorization of an unknown Token
-
-    SERVER_ERROR = 3000
-    UNABLE_TO_USE_THE_CLIENTS_API = 3001
-    UNSUPPORTED_VERSION = 3002
-    NO_MATCHING_ENDPOINTS_OR_EXPECTED_ENDPOINTS_MISSING_BETWEEN_PARTIES = 3003
-
-    HUB_ERROR = 4000
-    UNKNOWN_RECEIVER = 4001 # TO address is unknown
-    TIMEOUT_ON_FORWARDED_REQUEST = 4002 # message is forwarded, but request times out
-    CONNECTION_PROBLEM = 4003 # receiving party is not connected
-
-
-
-class OcpiPartyRoleEnum(str, Enum):
-    '''
-    OCPI 16.5.1 Role enum & OCPI 2.2
-
-    - CPO: Charging Point Operator. Operates a network of Charge Points.
-    - eMSP: e-Mobility Service Provider. Gives EV drivers access to charging services.
-    - Hub: Can connect one or more CPOs to one or more eMSPs.
-    - NAP: National Access Point. Provides a national database with all (public) charging locations. Information can be sent and retrieved from the NAP. This makes it different from a typical NSP.
-    - NSP: Navigation Service Provider. Provides EV drivers with location information of Charge Points. Usually only interested in Location information.
-    - Roaming Hub: See: Hub.
-    - SCSP: Smart Charging Service Provider. Provides Smart Charging service to other parties. Might use a lot of different inputs to calculate Smart Charging Profiles.
-    '''
-    CPO = 'CPO'
-    EMSP = 'EMSP'
-    HUB = 'HUB'
-
+from ocpi_pydantic.v221.enum import OcpiStatus
 
 
 

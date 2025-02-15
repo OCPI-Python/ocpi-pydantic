@@ -4,39 +4,7 @@ from typing import ClassVar
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 from ocpi_pydantic.v221.base import OcpiBaseResponse
-
-
-
-class OcpiVersionNumberEnum(str, Enum):
-    'List of known versions.'
-    v221 = '2.2.1'
-
-
-
-class OcpiModuleIdEnum(str, Enum):
-    '''
-    The Module identifiers for each endpoint are described in the beginning of each Module chapter.
-    '''
-    cdrs = 'cdrs'
-    chargingprofiles = 'chargingprofiles'
-    commands = 'commands'
-    credentials = 'credentials' # Required for all implementations. The role field has no function for this module.
-    hubclientinfo = 'hubclientinfo'
-    locations = 'locations'
-    sessions = 'sessions'
-    tariffs = 'tariffs'
-    tokens = 'tokens'
-    versions = 'versions'
-
-
-
-class OcpiInterfaceRoleEnum(str, Enum):
-    '''
-    - SENDER: Sender Interface implementation. Interface implemented by the owner of data, so the Receiver can Pull information from the data Sender/owner.
-    - RECEIVER: Receiver Interface implementation. Interface implemented by the receiver of data, so the Sender/owner can Push information to the Receiver.
-    '''
-    SENDER = 'SENDER'
-    RECEIVER = 'RECEIVER'
+from ocpi_pydantic.v221.enum import OcpiInterfaceRoleEnum, OcpiModuleIdEnum, OcpiVersionNumberEnum
 
 
 
