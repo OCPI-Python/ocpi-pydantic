@@ -1,7 +1,8 @@
 from pydantic import AwareDatetime, BaseModel, Field
 
-from ocpi_pydantic.v221.base import OcpiDisplayText, OcpiGeoLocation, OcpiImage
+from ocpi_pydantic.v221.base import OcpiDisplayText
 from ocpi_pydantic.v221.enum import OcpiCapabilityEnum, OcpiParkingRestrictionEnum, OcpiStatusEnum
+from ocpi_pydantic.v221.locations import OcpiGeoLocation, OcpiImage
 from ocpi_pydantic.v221.locations.connector import OcpiConnector
 
 
