@@ -48,7 +48,7 @@ class OcpiVersion(BaseModel):
     url: HttpUrl
 
     _example: ClassVar[dict] = {
-        'version': OcpiVersionNumberEnum.v2_2_1, 'url': 'https://example.com/ocpi/cpo/2.2/',
+        'version': OcpiVersionNumberEnum.v221, 'url': 'https://example.com/ocpi/cpo/2.2/',
     }
     model_config = ConfigDict(json_schema_extra={'examples': [_example]})
 
@@ -59,7 +59,7 @@ class OcpiVersionDetail(BaseModel):
     endpoints: list[OcpiEndpoint] = Field(description='A list of supported endpoints for this version.')
 
     _example: ClassVar[dict] = {
-        'version': OcpiVersionNumberEnum.v2_2_1,
+        'version': OcpiVersionNumberEnum.v221,
         'endpoints': OcpiEndpoint._examples,
     }
     model_config = ConfigDict(json_schema_extra={'examples': [_example]})
