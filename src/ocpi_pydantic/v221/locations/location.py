@@ -3,7 +3,7 @@ from typing import ClassVar
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
-from ocpi_pydantic.v221.base import OcpiDisplayText
+from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText
 from ocpi_pydantic.v221.enum import OcpiEnergySourceCategoryEnum, OcpiEnvironmentalImpactCategoryEnum, OcpiFacilityEnum, OcpiParkingTypeEnum, OcpiTokenTypeEnum
 from ocpi_pydantic.v221.locations import OcpiBusinessDetails, OcpiGeoLocation, OcpiImage
 from ocpi_pydantic.v221.locations.evse import OcpiEvse
@@ -449,4 +449,15 @@ class OcpiLocation(BaseModel):
             "last_updated": "2017-03-07T02:21:22Z"
         },
     ]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
+
+class OcpiLocationsResponse(OcpiBaseResponse):
+    data: OcpiLocation
+
+    _examples: ClassVar[dict] = [{ # Version details response (one object)
+        'data': OcpiLocation._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})
