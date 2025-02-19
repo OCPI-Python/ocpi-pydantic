@@ -10,20 +10,6 @@ from ocpi_pydantic.v221.locations.evse import OcpiEvse
 
 
 
-def _set_timezone_to_utc(raw_dt: str | datetime):
-    match type(raw_dt).__name__:
-        case 'datetime': dt = raw_dt.replace(microsecond=0)
-        case 'str':
-            try: dt = datetime.strptime(raw_dt, '%Y-%m-%dT%H:%M:%S%z') # '2024-06-11T16:00:00Z' to datetime
-            except ValueError:
-                dt = datetime.strptime(raw_dt, '%Y-%m-%dT%H:%M:%S.%f%z') # '2024-06-11T16:00:00.123Z' to datetime
-                dt = dt.replace(microsecond=0)
-        case _: raise ValueError
-    if not dt.tzinfo: dt = dt.replace(tzinfo=timezone.utc)
-    return dt
-
-
-
 class OcpiPublishTokenType(BaseModel):
     '''
     OCPI 8.4.20. PublishTokenType class
@@ -59,8 +45,14 @@ class OcpiExceptionalPeriod(BaseModel):
     period_begin: AwareDatetime = Field(description='Begin of the exception. In UTC, time_zone field can be used to convert to local time.')
     period_end: AwareDatetime = Field(description='End of the exception. In UTC, time_zone field can be used to convert to local time.')
 
-    _time_fields_with_timezone = field_validator('period_begin', 'period_end', mode='before')(_set_timezone_to_utc)
-
+    @field_validator('period_begin', 'period_end', mode='before')
+    @classmethod
+    def validate_datetime(cls, value: str):
+        try: dt = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S%z') # '2024-06-11T16:00:00Z' to datetime
+        except ValueError: dt = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f%z') # '2024-06-11T16:00:00.123Z' to datetime
+        dt = dt.replace(second=0, microsecond=0)
+        if not dt.tzinfo: dt = dt.replace(tzinfo=timezone.utc)
+        return dt
 
 
 
