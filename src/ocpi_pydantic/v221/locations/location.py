@@ -29,7 +29,7 @@ class OcpiRegularHours(BaseModel):
     '''
     OCPI 8.4.21. REgularHours class
     '''
-    weekday: int = Field(description='Number of day in the week, from Monday (1) till Sunday (7)', min_length=1, max_length=1)
+    weekday: int = Field(description='Number of day in the week, from Monday (1) till Sunday (7)', ge=1, le=7)
     period_begin: str = Field(description='Begin of the regular period, in local time, given in hours and minutes.')
     period_end: str = Field(description='End of the regular period, in local time, syntax as for period_begin.')
 
