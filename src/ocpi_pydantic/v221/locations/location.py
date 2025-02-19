@@ -47,12 +47,18 @@ class OcpiExceptionalPeriod(BaseModel):
 
     @field_validator('period_begin', 'period_end', mode='before')
     @classmethod
-    def validate_datetime(cls, value: str):
-        try: dt = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S%z') # '2024-06-11T16:00:00Z' to datetime
-        except ValueError: dt = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f%z') # '2024-06-11T16:00:00.123Z' to datetime
+    def validate_datetime(cls, value: str | datetime):
+        match type(value).__name__:
+            case 'datetime': dt = value
+            case 'str':
+                try: dt = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S%z') # '2024-06-11T16:00:00Z' to datetime
+                except ValueError: dt = datetime.strptime(value, '%Y-%m-%dT%H:%M:%S.%f%z') # '2024-06-11T16:00:00.123Z' to datetime
         dt = dt.replace(second=0, microsecond=0)
         if not dt.tzinfo: dt = dt.replace(tzinfo=timezone.utc)
         return dt
+    
+    _examples: ClassVar[list[dict]] = [{'period_begin': '2018-12-25T03:00:00Z', 'period_end': '2018-12-25T05:00:00Z'}]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
 
 
 
@@ -75,7 +81,7 @@ class OcpiHours(BaseModel):
                 {"weekday": 1, "period_begin": "01:00", "period_end": "06:00"},
                 {"weekday": 2, "period_begin": "01:00", "period_end": "06:00"},
             ],
-            "exceptional_closings": [{"period_begin": "2018-12-25T03:00:00Z", "period_end": "2018-12-25T05:00:00Z"}],
+            "exceptional_closings": [{'period_begin': '2018-12-25T03:00:00Z', 'period_end': '2018-12-25T05:00:00Z'}],
         },
         # 8.4.14.3. Example: Opening Hours with exceptional opening.
         {
@@ -84,7 +90,7 @@ class OcpiHours(BaseModel):
                 {"weekday": 1, "period_begin": "00:00", "period_end": "04:00"},
                 {"weekday": 2, "period_begin": "00:00", "period_end": "04:00"}
             ],
-            "exceptional_openings": [{"period_begin": "2018-12-25T05:00:00Z", "period_end": "2018-12-25T06:00:00Z"}],
+            "exceptional_openings": [{'period_begin': '2018-12-25T03:00:00Z', 'period_end': '2018-12-25T05:00:00Z'}],
         },
     ]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})

@@ -40,3 +40,6 @@ files/ssl/*
 files/ssh/*
 .pdm-python
 dist/
+.coverage
+coverage.xml
+*.pyc
