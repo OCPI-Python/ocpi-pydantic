@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import ClassVar
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator, model_validator
 
 from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText
 from ocpi_pydantic.v221.enum import OcpiEnergySourceCategoryEnum, OcpiEnvironmentalImpactCategoryEnum, OcpiFacilityEnum, OcpiParkingTypeEnum, OcpiTokenTypeEnum
@@ -15,14 +15,25 @@ class OcpiPublishTokenType(BaseModel):
     OCPI 8.4.20. PublishTokenType class
 
     - uid、visual_number、group_id 至少要填一欄位。
-    - 如果有 uid，就不該有 type。
-    - 如果有 visual_number，就不該有 issuer。
+    - 如果有 uid，type 也應該要有。
+    - 如果有 visual_number，issuer 也應該要有。
     '''
     uid: str | None = Field(None, description='Unique ID by which this Token can be identified.', max_length=36)
     type: OcpiTokenTypeEnum | None = Field(None, description='Type of the token.')
     visual_number: str | None = Field(None, description='Visual readable number/identification as printed on the Token (RFID card).', max_length=64)
     issuer: str | None = Field(None, description='Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.', max_length=64)
     group_id: str | None = Field(None, description='This ID groups a couple of tokens.')
+
+    @model_validator(mode='after')
+    def validate_uid_visual_number_group_id(self):
+        if not self.uid and not self.visual_number and not self.group_id:
+            raise ValueError('At least one of the following fields SHALL be set: `uid`, `visual_number`, or `group_id`.')
+        if self.uid and not self.type:
+            raise ValueError('When `uid` is set, `type` SHALL also be set.')
+        if self.visual_number and not self.issuer:
+            raise ValueError('When `visual_number` is set, `issuer` SHALL also be set.')
+        return self
+
 
 
 class OcpiRegularHours(BaseModel):
@@ -40,7 +51,7 @@ class OcpiRegularHours(BaseModel):
 
 class OcpiExceptionalPeriod(BaseModel):
     '''
-    OCPI ExceptionalPeriod class
+    OCPI 8.4.11. ExceptionalPeriod class
     '''
     period_begin: AwareDatetime = Field(description='Begin of the exception. In UTC, time_zone field can be used to convert to local time.')
     period_end: AwareDatetime = Field(description='End of the exception. In UTC, time_zone field can be used to convert to local time.')
@@ -172,7 +183,7 @@ class OcpiLocation(BaseModel):
     OCPI 8.3.1. Location Object
     '''
 
-    country_code: str = Field('TW', description="ISO-3166 alpha-2 country code of the CPO that 'owns' this Location.", min_length=2, max_length=2)
+    country_code: str = Field(description="ISO-3166 alpha-2 country code of the CPO that 'owns' this Location.", min_length=2, max_length=2)
     party_id: str = Field(description="ID of the CPO that 'owns' this Location (following the ISO-15118 standard).", min_length=3, max_length=3)
     id: str = Field(description='Uniquely identifies the location within the CPOs platform (and suboperator platforms).', max_length=36)
     name: str | None = Field(None, description='Display name of the location.')
@@ -183,12 +194,12 @@ class OcpiLocation(BaseModel):
     time_zone: str = Field('Asia/Taipei', description='One of IANA tzdata’s TZ-values representing the time zone of the location.')
     coordinates: OcpiGeoLocation = Field(description='Coordinates of the location.')
     postal_code: str | None = Field(None, description='Postal code of the location, may only be omitted when the location has no postal code.', max_length=10)
-    country: str = Field('TWN', description='ISO 3166-1 alpha-3 code for the country of this location.', max_length=3)
+    country: str = Field(description='ISO 3166-1 alpha-3 code for the country of this location.', max_length=3)
     state: str | None = Field(None, description='State or province of the location, only to be used when relevant.', max_length=20)
     city: str = Field(description='City or town.', max_length=45)
     address: str = Field(description='Street/block name and house number if available.', max_length=45)
     opening_times: OcpiHours | None = Field(None, description='The times when the EVSEs at the location can be accessed for charging.')
-    charging_when_closed: bool | None = Field(True, description='Indicates if the EVSEs are still charging outside the opening hours of the location.')
+    charging_when_closed: bool | None = Field(True, description='Indicates if the EVSEs are still charging outside the opening hours of the location. Default: true')
 
     related_locations: list[AdditionalGeoLocation] = Field([], description='Geographical location of related points relevant to the user.')
     parking_type: OcpiParkingTypeEnum | None = Field(None, description='The general type of parking at the charge point location.')

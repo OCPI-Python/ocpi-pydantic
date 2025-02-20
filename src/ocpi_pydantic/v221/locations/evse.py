@@ -21,14 +21,14 @@ class OcpiStatusSchedule(BaseModel):
 
 class OcpiEvse(BaseModel):
     '''
-    8.3.2. EVSE Object
+    OCPI 8.3.2. EVSE Object
     '''
     uid: str = Field(description='Uniquely identifies the EVSE within the CPOs platform (and suboperator platforms).', max_length=36)
     evse_id: str | None = Field(None, description='Compliant with the following specification for EVSE ID from "eMI3 standard version V1.0" (http://emi3group.com/documents-links/) "Part 2: business objects."', max_length=48)
     status: OcpiStatusEnum = Field(description='Indicates the current status of the EVSE.')
     status_schedule: list[OcpiStatusSchedule] = Field([], description='Indicates a planned status update of the EVSE.')
     capabilities: list[OcpiCapabilityEnum] = Field([], description='List of functionalities that the EVSE is capable of.')
-    connectors: list[OcpiConnector] = Field([], description='List of available connectors on the EVSE.')
+    connectors: list[OcpiConnector] = Field(description='List of available connectors on the EVSE.', min_length=1)
     floor_level: str | None = Field(None, description='Level on which the Charge Point is located (in garage buildings) in the locally displayed numbering scheme.', max_length=4)
     coordinates: OcpiGeoLocation | None = Field(None, description='Coordinates of the EVSE.')
     physical_reference: str | None = Field(None, description='A number/string printed on the outside of the EVSE for visual identification.', max_length=16)
