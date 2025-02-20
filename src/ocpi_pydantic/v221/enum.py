@@ -201,6 +201,17 @@ class OcpiFacilityEnum(str, Enum):
 
 
 
+class OcpiImageCategoryEnum(str, Enum):
+    CHARGER = 'CHARGER'
+    ENTRANCE = 'ENTRANCE'
+    LOCATION = 'LOCATION'
+    NETWORK = 'NETWORK'
+    OPERATOR = 'OPERATOR'
+    OTHER = 'OTHER'
+    OWNER = 'OWNER'
+
+
+
 class OcpiParkingRestrictionEnum(str, Enum):
     '''
     OCPI 8.4.17. ParkingRestriction enum

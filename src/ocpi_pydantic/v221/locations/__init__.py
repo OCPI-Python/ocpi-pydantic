@@ -1,16 +1,17 @@
 from typing import ClassVar
 
+from ocpi_pydantic.v221.enum import OcpiImageCategoryEnum
 from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 
 
 class OcpiImage(BaseModel):
     '''
-    OCPI 8.4.15 Image class
+    OCPI 8.4.15. Image class
     '''
     url: HttpUrl = Field(description='URL from where the image data can be fetched through a web browser.')
     thumbnail: HttpUrl | None = Field(None, description='URL from where a thumbnail of the image can be fetched through a webbrowser.')
-    category: str = Field(description='Describes what the image is used for.')
+    category: OcpiImageCategoryEnum = Field(description='Describes what the image is used for.')
     type: str = Field(description='Image type like: gif, jpeg, png, svg.')
     width: int | None = Field(None, description='Width of the full scale image.')
     height: int | None = Field(None, description='Height of the full scale image.')
@@ -26,7 +27,7 @@ class OcpiImage(BaseModel):
 
 class OcpiBusinessDetails(BaseModel):
     '''
-    OCPI 8.4.2 BusinessDetails class
+    OCPI 8.4.2. BusinessDetails class
     '''
     name: str = Field(description='Name of the operator.')
     website: str | None = Field(None, description='Link to the operator’s website.')
