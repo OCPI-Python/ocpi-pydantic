@@ -128,7 +128,7 @@ class OcpiEnergySource(BaseModel):
     OCPI 8.4.7. EnergySource class
     '''
     source: OcpiEnergySourceCategoryEnum = Field(description='The type of energy source.')
-    percentage: int = Field(description='Percentage of this source (0-100) in the mix.')
+    percentage: int = Field(description='Percentage of this source (0-100) in the mix.', gt=0, le=100)
 
 
 
@@ -137,7 +137,7 @@ class OcpiEnvironmentalImpact(BaseModel):
     OCPI 8.4.9. EnvironmentalImpact class
     '''
     category: OcpiEnvironmentalImpactCategoryEnum = Field(description='The environmental impact category of this value.')
-    amount: float = Field(description='Amount of this portion in g/kWh.')
+    amount: float = Field(description='Amount of this portion in g/kWh.', gt=0)
 
 
 

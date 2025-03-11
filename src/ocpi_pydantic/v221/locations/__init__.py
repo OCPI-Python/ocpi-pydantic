@@ -13,8 +13,8 @@ class OcpiImage(BaseModel):
     thumbnail: HttpUrl | None = Field(None, description='URL from where a thumbnail of the image can be fetched through a webbrowser.')
     category: OcpiImageCategoryEnum = Field(description='Describes what the image is used for.')
     type: str = Field(description='Image type like: gif, jpeg, png, svg.')
-    width: int | None = Field(None, description='Width of the full scale image.')
-    height: int | None = Field(None, description='Height of the full scale image.')
+    width: int | None = Field(None, description='Width of the full scale image.', gt=0)
+    height: int | None = Field(None, description='Height of the full scale image.', gt=0)
 
     _example: ClassVar[dict] = {
         'url': 'https://wincharge.com.tw/wp-content/uploads/2022/07/logo_wincharge_banner_blue.png',
