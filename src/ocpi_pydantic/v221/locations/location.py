@@ -483,7 +483,7 @@ class OcpiLocation(BaseModel):
 class OcpiLocationListResponse(OcpiBaseResponse):
     data: list[OcpiLocation]
 
-    _examples: ClassVar[dict] = [{ # Version details response (one object)
+    _examples: ClassVar[dict] = [{
         'data': [OcpiLocation._examples[0]], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
     }]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})
@@ -493,7 +493,7 @@ class OcpiLocationListResponse(OcpiBaseResponse):
 class OcpiLocationResponse(OcpiBaseResponse):
     data: OcpiLocation
 
-    _examples: ClassVar[dict] = [{ # Version details response (one object)
+    _examples: ClassVar[dict] = [{
         'data': OcpiLocation._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
     }]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})

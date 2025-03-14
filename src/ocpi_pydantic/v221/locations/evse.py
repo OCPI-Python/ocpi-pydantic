@@ -38,13 +38,25 @@ class OcpiEvse(BaseModel):
     images: list[OcpiImage] = Field([], description='Links to images related to the EVSE such as photos or logos.')
     last_updated: AwareDatetime = Field(description='Timestamp when this EVSE or one of its Connectors was last updated (or created).')
 
+    _example: ClassVar[dict] = {
+        "uid": "3256",
+        "evse_id": "BE*BEC*E041503003",
+        "status": OcpiStatusEnum.AVAILABLE,
+        "capabilities": [OcpiCapabilityEnum.RESERVABLE],
+        "connectors": [OcpiConnector._example],
+        "floor": '-1',
+        "physical_reference": '3',
+        "last_updated": "2019-06-24T12:39:09Z",
+    }
+    model_config = ConfigDict(json_schema_extra={'examples': [_example]})
+
 
 
 class OcpiEvseListResponse(OcpiBaseResponse):
     data: list[OcpiEvse]
 
-    _examples: ClassVar[dict] = [{ # Version details response (one object)
-        'data': [], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    _examples: ClassVar[dict] = [{
+        'data': [OcpiEvse._example], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
     }]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})
 
@@ -53,7 +65,7 @@ class OcpiEvseListResponse(OcpiBaseResponse):
 class OcpiEvseResponse(OcpiBaseResponse):
     data: OcpiEvse
 
-    _examples: ClassVar[dict] = [{ # Version details response (one object)
-        'data': {}, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    _examples: ClassVar[dict] = [{
+        'data': OcpiEvse._example, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
     }]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})

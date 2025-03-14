@@ -21,12 +21,20 @@ class OcpiConnector(BaseModel):
     terms_and_conditions: HttpUrl | None = Field(None, description='URL to the operator’s terms and conditions.')
     last_updated: AwareDatetime = Field(description='Timestamp when this Connector was last updated (or created).')
 
+    _example: ClassVar[dict] = {
+        "id": "1",
+        "standard": OcpiConnectorTypeEnum.IEC_62196_T2,
+        "format": OcpiConnectorFormatEnum.SOCKET,
+        "tariff_ids": ["14"],
+        
+    }
+    model_config = ConfigDict(json_schema_extra={'examples': [_example]})
 
 
 class OcpiConnectorResponse(OcpiBaseResponse):
     data: OcpiConnector
 
     _examples: ClassVar[dict] = [{ # Version details response (one object)
-        'data': {}, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+        'data': OcpiConnector._example, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
     }]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})
