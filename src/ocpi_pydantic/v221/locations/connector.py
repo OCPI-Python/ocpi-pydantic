@@ -1,4 +1,6 @@
-from pydantic import AwareDatetime, BaseModel, Field, HttpUrl
+from typing import ClassVar
+from ocpi_pydantic.v221.base import OcpiBaseResponse
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, HttpUrl
 
 from ocpi_pydantic.v221.enum import OcpiConnectorFormatEnum, OcpiConnectorTypeEnum, OcpiPowerTypeEnum
 
@@ -18,3 +20,13 @@ class OcpiConnector(BaseModel):
     tariff_ids: list[str] = Field([], description='Identifiers of the currently valid charging tariffs.')
     terms_and_conditions: HttpUrl | None = Field(None, description='URL to the operator’s terms and conditions.')
     last_updated: AwareDatetime = Field(description='Timestamp when this Connector was last updated (or created).')
+
+
+
+class OcpiLocationResponse(OcpiBaseResponse):
+    data: OcpiConnector
+
+    _examples: ClassVar[dict] = [{ # Version details response (one object)
+        'data': {}, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})

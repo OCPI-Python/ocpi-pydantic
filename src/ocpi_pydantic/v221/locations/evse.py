@@ -1,6 +1,7 @@
-from pydantic import AwareDatetime, BaseModel, Field
+from typing import ClassVar
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
-from ocpi_pydantic.v221.base import OcpiDisplayText
+from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText
 from ocpi_pydantic.v221.enum import OcpiCapabilityEnum, OcpiParkingRestrictionEnum, OcpiStatusEnum
 from ocpi_pydantic.v221.locations import OcpiGeoLocation, OcpiImage
 from ocpi_pydantic.v221.locations.connector import OcpiConnector
@@ -36,3 +37,13 @@ class OcpiEvse(BaseModel):
     parking_restrictions: list[OcpiParkingRestrictionEnum] = Field([], description='The restrictions that apply to the parking spot.')
     images: list[OcpiImage] = Field([], description='Links to images related to the EVSE such as photos or logos.')
     last_updated: AwareDatetime = Field(description='Timestamp when this EVSE or one of its Connectors was last updated (or created).')
+
+
+
+class OcpiLocationResponse(OcpiBaseResponse):
+    data: OcpiEvse
+
+    _examples: ClassVar[dict] = [{ # Version details response (one object)
+        'data': {}, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
