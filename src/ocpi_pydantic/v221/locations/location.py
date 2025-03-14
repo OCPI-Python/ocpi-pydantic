@@ -491,7 +491,7 @@ class OcpiLocationListResponse(OcpiBaseResponse):
 
 
 class OcpiLocationResponse(OcpiBaseResponse):
-    data: list[OcpiLocation]
+    data: OcpiLocation
 
     _examples: ClassVar[dict] = [{ # Version details response (one object)
         'data': OcpiLocation._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
