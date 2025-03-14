@@ -40,7 +40,17 @@ class OcpiEvse(BaseModel):
 
 
 
-class OcpiLocationResponse(OcpiBaseResponse):
+class OcpiEvseListResponse(OcpiBaseResponse):
+    data: list[OcpiEvse]
+
+    _examples: ClassVar[dict] = [{ # Version details response (one object)
+        'data': [], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
+class OcpiEvseResponse(OcpiBaseResponse):
     data: OcpiEvse
 
     _examples: ClassVar[dict] = [{ # Version details response (one object)

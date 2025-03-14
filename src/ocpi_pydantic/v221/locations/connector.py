@@ -23,7 +23,7 @@ class OcpiConnector(BaseModel):
 
 
 
-class OcpiLocationResponse(OcpiBaseResponse):
+class OcpiConnectorResponse(OcpiBaseResponse):
     data: OcpiConnector
 
     _examples: ClassVar[dict] = [{ # Version details response (one object)
