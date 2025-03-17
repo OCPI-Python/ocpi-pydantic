@@ -39,6 +39,16 @@ class OcpiPublishTokenType(BaseModel):
 class OcpiRegularHours(BaseModel):
     '''
     OCPI 8.4.21. REgularHours class
+
+    Regular recurring operation or access hours.
+
+    - `period_begin`:
+        Begin of the regular period, in local time, given in hours and minutes. Must be in
+        24h format with leading zeros. Example: "18:15". Hour/Minute separator: ":"
+        Regex: `([0-1][0-9]|2[0-3]):[0-5][0-9]`.
+    - `period_end`:
+        End of the regular period, in local time, syntax as for `period_begin`. Must be
+        later than `period_begin`.
     '''
     weekday: int = Field(description='Number of day in the week, from Monday (1) till Sunday (7)', ge=1, le=7)
     period_begin: str = Field(description='Begin of the regular period, in local time, given in hours and minutes.')
@@ -112,7 +122,17 @@ class AdditionalGeoLocation(BaseModel):
     '''
     OCPI 8.4.1. AdditionalGeoLoation class
 
-    - WGS 84 坐標系。
+    This class defines an additional geo location that is relevant for the Charge Point. The geodetic system to be used is WGS 84.
+
+    - `latitude`:
+        Latitude of the point in decimal degree. Example: 50.770774. Decimal
+        separator: "`.`" Regex: `-?[0-9]{1,2}\.[0-9]{5,7}`
+    - `longitude`:
+        Longitude of the point in decimal degree. Example: -126.104965. Decimal
+        separator: "`.`" Regex: `-?[0-9]{1,3}\.[0-9]{5,7}`
+    - `name`:
+        Name of the point in local language or as written at the location. For example
+        the street name of a parking lot entrance or it’s number.
     '''
     latitude: str = Field(description='Latitude of the point in decimal degree.', max_length=10)
     longitude: str = Field(description='Longitude of the point in decimal degree.', max_length=11)
@@ -126,9 +146,11 @@ class AdditionalGeoLocation(BaseModel):
 class OcpiEnergySource(BaseModel): 
     '''
     OCPI 8.4.7. EnergySource class
+
+    Key-value pairs (enum + percentage) of energy sources. All given values of all categories should add up to 100 percent.
     '''
     source: OcpiEnergySourceCategoryEnum = Field(description='The type of energy source.')
-    percentage: int = Field(description='Percentage of this source (0-100) in the mix.', gt=0, le=100)
+    percentage: float = Field(description='Percentage of this source (0-100) in the mix.', gt=0, le=100)
 
 
 

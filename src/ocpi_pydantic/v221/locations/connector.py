@@ -9,6 +9,39 @@ from ocpi_pydantic.v221.enum import OcpiConnectorFormatEnum, OcpiConnectorTypeEn
 class OcpiConnector(BaseModel):
     '''
     OCPI 8.3.3. Connector Object
+
+    A _Connector_ is the _socket_ or _cable and plug_ available for the EV to use. A single EVSE may provide multiple Connectors but only
+    one of them can be in use at the same time. A Connector always belongs to an EVSE object.
+
+    - `id`:  
+        Identifier of the Connector within the EVSE. Two Connectors may have
+        the same id as long as they do not belong to the same _EVSE_ object.
+    - `max_voltage`:
+        Maximum voltage of the connector (line to neutral for AC_3_PHASE), in
+        volt [V]. For example: DC Chargers might vary the voltage during
+        charging when battery almost full.
+    - `max_electric_power`:
+        Maximum electric power that can be delivered by this connector, in
+        Watts (W). When the maximum electric power is lower than the
+        calculated value from `voltage` and `amperage`, this value should be
+        set.
+        For example: A DC Charge Point which can delivers up to 920V and up
+        to 400A can be limited to a maximum of 150kW (max_electric_power =
+        150000). Depending on the car, it may supply max voltage or current,
+        but not both at the same time.
+        For AC Charge Points, the amount of phases used can also have
+        influence on the maximum power.
+    - `tariff_ids`:
+        Identifiers of the currently valid charging tariffs. Multiple tariffs are
+        possible, but only one of each Tariff.type can be active at the same time.
+        Tariffs with the same type are only allowed if they are not active at the
+        same time: start_date_time and end_date_time period not overlapping.
+        When preference-based smart charging is supported, one tariff for
+        every possible ProfileType should be provided. These tell the user about
+        the options they have at this Connector, and what the tariff is for every
+        option.
+        For a "free of charge" tariff, this field should be set and point to a
+        defined "free of charge" tariff.
     '''
     id: str = Field(description='Identifier of the Connector within the EVSE.', max_length=36)
     standard: OcpiConnectorTypeEnum = Field(description='The standard of the installed connector.')
