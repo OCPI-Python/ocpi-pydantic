@@ -265,6 +265,50 @@ class OcpiStatusEnum(str, Enum):
 
 
 
+class OcpiAuthMethodEnum(str, Enum):
+    '''
+    OCPI 10.4.1. AuthMethod enum
+    '''
+    AUTH_REQUEST = 'AUTH_REQUEST' # Authentication request has been sent to the eMSP.
+    COMMAND = 'COMMAND' # Command like StartSession or ReserveNow used to start the Session, the Token provided in the Command was used as authorization.
+    WHITELIST = 'WHITELIST' # Whitelist used for authentication, no request to the eMSP has been performed.
+
+
+
+class OcpiCrdDeminsionTypeEnum(str, Enum):
+    '''
+    OCPI 10.4.3. CdrDimensionType enum
+
+    This enumeration contains allowed values for CdrDimensions, which are used to define dimensions of ChargingPeriods in both
+    `CDRs` and `Sessions`. Some of these values are not useful for `CDRs`, and SHALL therefor only be used in `Sessions`, these are
+    marked in the column: Session Only
+
+    Note:
+
+    OCPI makes it possible to provide SoC in the Session object. This information can be useful to show the current
+    State of Charge to an EV driver during charging. Implementers should be aware that SoC is only available at
+    some DC Chargers. Which is currently a small amount of the total amount of Charge Points. Of these DC
+    Chargers, only a small percentage currently provides SoC via OCPP to the CPO. Then there is also the question
+    if SoC is allowed to be provided to third-parties as it can be seen as privacy-sensitive information. So if an
+    implementer wants to show SoC in, for example an App, care should be taken, to make the App work without
+    SoC, as this will probably not always be available.
+    '''
+    CURRENT = 'CURRENT' # Session Only # Average charging current during this ChargingPeriod: defined in A (Ampere). When negative, the current is flowing from the EV to the grid.
+    ENERGY = 'ENERGY' # Total amount of energy (dis-)charged during this ChargingPeriod: defined in kWh. When negative, more energy was feed into the grid then charged into the EV. Default step_size 1.
+    ENERGY_EXPORT = 'ENERGY_EXPORT' # Session Only # Total amount of energy feed back into the grid: defined in kWh.
+    ENERGY_IMPORT = 'ENERGY_IMPORT' # Session Only # Total amount of energy charged, defined in kWh.
+    MAX_CURRENT = 'MAX_CURRENT' # Sum of the maximum current over all phases, reached during this ChargingPeriod: defined in A (Ampere)
+    MIN_CURRENT = 'MIN_CURRENT' # Sum of the minimum current over all phases, reached during this ChargingPeriod, when negative, current has flowed from the EV to the grid. Defined in A (Ampere).
+    MAX_POWER = 'MAX_POWER' # Maximum power reached during this ChargingPeriod: defined in kW (Kilowatt).
+    MIN_POWER = 'MIN_POWER' # Minimum power reached during this ChargingPeriod: defined in kW (Kilowatt), when negative, the power has flowed from the EV to the grid.
+    PARKING_TIME = 'PARKING_TIME' # Time during this ChargingPeriod not charging: defined in hours, default step_size multiplier is 1 second.
+    POWER = 'POWER' # Session Only # Average power during this ChargingPeriod: defined in kW (Kilowatt). When negative, the power is flowing from the EV to the grid.
+    RESERVATION_TIME = 'RESERVATION_TIME' # Time during this ChargingPeriod Charge Point has been reserved and not yet been in use for this customer: defined in hours, default step_size multiplier is 1 second.
+    STATE_OF_CHARGE = 'STATE_OF_CHARGE' # Session Only # Current state of charge of the EV, in percentage, values allowed: 0 to 100. See note below.
+    TIME = 'TIME' # Time charging during this ChargingPeriod: defined in hours, default step_size multiplier is 1 second.
+
+
+
 class OcpiTokenTypeEnum(str, Enum):
     '''
     OCPI 12.4.4. TokenType enum
