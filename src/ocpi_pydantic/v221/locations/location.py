@@ -233,10 +233,7 @@ class OcpiLocation(BaseModel):
     facilities: list[OcpiFacilityEnum] = Field([], description='Optional list of facilities this charging location directly belongs to.')
     images: list[OcpiImage] = Field([], description='Links to images related to the location such as photos or logos.')
     energy_mix: OcpiEnergyMix | None = Field(None, description='Details on the energy supplied at this location.')
-    last_updated: AwareDatetime = Field(
-        default_factory=lambda: datetime.now(timezone.utc).replace(microsecond=0),
-        description='Timestamp when this Location or one of its EVSEs or Connectors were last updated (or created).'
-    )
+    last_updated: AwareDatetime = Field(description='Timestamp when this Location or one of its EVSEs or Connectors were last updated (or created).')
 
     _examples: ClassVar[list[dict]] = [
         { # 8.3.1.1. Example public charging location

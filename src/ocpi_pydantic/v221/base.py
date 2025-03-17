@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+from decimal import Decimal
 from typing import ClassVar, Generic, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -16,6 +17,15 @@ class OcpiDisplayText(BaseModel):
 
     _example: ClassVar[dict] = {"language": "en", "text": "Standard Tariff"}
     model_config = ConfigDict(json_schema_extra={'examples': [_example]})
+
+
+
+class OcpiPrice(BaseModel):
+    '''
+    OCPI 16.5. Price class
+    '''
+    excl_vat: Decimal = Field(description='Price/Cost excluding VAT.')
+    incl_vat: Decimal | None = Field(None, description='Price/Cost including VAT.')
 
 
 
