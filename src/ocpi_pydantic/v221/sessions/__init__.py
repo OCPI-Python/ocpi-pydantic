@@ -4,7 +4,7 @@ from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiPrice
 from ocpi_pydantic.v221.cdrs import OcpiCdrToken, OcpiChargingPeriod
-from ocpi_pydantic.v221.enum import OcpiAuthMethodEnum, OcpiProfileTypeEnum, OcpiSessionStatusEnum
+from ocpi_pydantic.v221.enum import OcpiAuthMethodEnum, OcpiChargingPreferencesResponseEnum, OcpiProfileTypeEnum, OcpiSessionStatusEnum
 
 
 
@@ -128,6 +128,27 @@ class OcpiSession(BaseModel):
 
 
 
+
+class OcpiSessionListResponse(OcpiBaseResponse):
+    data: list[OcpiSession]
+
+    _examples: ClassVar[dict] = [{
+        'data': [OcpiSession._examples[0]], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
+class OcpiSessionResponse(OcpiBaseResponse):
+    data: OcpiSession
+
+    _examples: ClassVar[dict] = [{
+        'data': OcpiSession._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
 class OcpiChargingPreferences(BaseModel):
     '''
     OCPI 9.3.2. ChargingPreferences Object
@@ -156,3 +177,13 @@ class OcpiChargingPreferences(BaseModel):
     departure_time: AwareDatetime | None = Field(None, description='Expected departure.')
     energy_need: float | None = Field(None, description='Requested amount of energy in kWh.')
     discharge_allowed: bool = Field(False, description='The driver allows their EV to be discharged when needed.')
+
+
+
+class OcpiChargingPreferencesResponse(OcpiBaseResponse):
+    data: OcpiChargingPreferencesResponseEnum
+
+    _examples: ClassVar[dict] = [{
+        'data': OcpiSession._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
