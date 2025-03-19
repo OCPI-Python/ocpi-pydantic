@@ -4,7 +4,7 @@ from typing import ClassVar, Generic, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from ocpi_pydantic.v221.enum import OcpiStatus
+from ocpi_pydantic.v221.enum import OcpiStatus, OcpiStatusCodeEnum
 
 
 
@@ -39,9 +39,8 @@ class OcpiBaseResponse(BaseModel, Generic[OcpiResponseDataGenericType]):
 
 
     '''
-    # data: list[BaseModel] | OcpiBaseResponseData | list[OcpiBaseResponseData] | str | BaseModel | None = None # 這裡是不要要泛型
     data: OcpiResponseDataGenericType | None = Field(None, description='Contains the actual response data object or list of objects from each request.')
-    status_code: OcpiStatus = Field(description='OCPI status code.')
+    status_code: OcpiStatusCodeEnum | OcpiStatus = Field(description='OCPI status code.')
     status_message: str | None = Field(None, description='An optional status message which may help when debugging.')
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc).replace(microsecond=0), description='The time this message was generated.')
 

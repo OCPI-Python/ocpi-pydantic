@@ -2,24 +2,71 @@ from enum import Enum, IntEnum
 
 
 
-class OcpiStatus(IntEnum):
-    SUCCESS = 1000
+class OcpiStatus(IntEnum): # To be deprecated
+    '''
+    OCPI 5. Status codes
+    '''
+    # 5.1. 1xxx: Success
+    SUCCESS = 1000 # Generic success code
     
-    CLIENT_ERROR = 2000 
-    INVALID_OR_MISSING_PARAMETERS = 2001 # for example: missing last_updated field in a PATCH request
-    NOT_ENOUGH_INFORMATION = 2002 # for example: Authorization request with too little information
-    UNKNOWN_LOCATION = 2003 # for example: Command: START_SESSION with unknown location
-    UNKNOWN_TOKEN = 2004 # for example: 'real-time' authorization of an unknown Token
+    # 5.2. 2xxx: Client errors
+    # Errors detected by the server in the message sent by a client where the client did something wrong.
+    CLIENT_ERROR = 2000 # Generic client error
+    INVALID_OR_MISSING_PARAMETERS = 2001 # Invalid or missing parameters , for example: missing `last_updated` field in a PATCH request.
+    NOT_ENOUGH_INFORMATION = 2002 # Not enough information, for example: Authorization request with too little information.
+    UNKNOWN_LOCATION = 2003 # Unknown Location, for example: Command: START_SESSION with unknown location.
+    UNKNOWN_TOKEN = 2004 # Unknown Token, for example: 'real-time' authorization of an unknown Token.
 
-    SERVER_ERROR = 3000
-    UNABLE_TO_USE_THE_CLIENTS_API = 3001
-    UNSUPPORTED_VERSION = 3002
-    NO_MATCHING_ENDPOINTS_OR_EXPECTED_ENDPOINTS_MISSING_BETWEEN_PARTIES = 3003
+    # 5.3. 3xxx: Server errors
+    # Error during processing of the OCPI payload in the server. The message was syntactically correct but could not be processed by
+    # the server.
+    SERVER_ERROR = 3000 # Generic server error
+    UNABLE_TO_USE_THE_CLIENTS_API = 3001 # Unable to use the client’s API. For example during the credentials registration: When the initializing party requests data from the other party during the open POST call to its credentials endpoint. If one of the GETs can not be processed, the party should return this error in the POST response.
+    UNSUPPORTED_VERSION = 3002 # Unsupported version
+    NO_MATCHING_ENDPOINTS_OR_EXPECTED_ENDPOINTS_MISSING_BETWEEN_PARTIES = 3003 # No matching endpoints or expected endpoints missing between parties. Used during the registration process if the two parties do not have any mutual modules or endpoints available, or the minimal implementation expected by the other party is not been met.
 
-    HUB_ERROR = 4000
-    UNKNOWN_RECEIVER = 4001 # TO address is unknown
-    TIMEOUT_ON_FORWARDED_REQUEST = 4002 # message is forwarded, but request times out
-    CONNECTION_PROBLEM = 4003 # receiving party is not connected
+    # 5.4. 4xxx: Hub errors
+    # When a server encounters an error, client side error (2xxx) or server side error (3xxx), it sends the status code to the Hub. The Hub
+    #SHALL then forward this error to the client which sent the request (when the request was not a Broadcast Push).
+    # For errors that a Hub encounters while routing messages, the following OCPI status codes shall be used.
+    HUB_ERROR = 4000 # Generic error
+    UNKNOWN_RECEIVER = 4001 # Unknown receiver (TO address is unknown)
+    TIMEOUT_ON_FORWARDED_REQUEST = 4002 # Timeout on forwarded request (message is forwarded, but request times out)
+    CONNECTION_PROBLEM = 4003 # Connection problem (receiving party is not connected)
+
+
+
+class OcpiStatusCodeEnum(IntEnum):
+    '''
+    OCPI 5. Status codes
+    '''
+    # 5.1. 1xxx: Success
+    SUCCESS = 1000 # Generic success code
+    
+    # 5.2. 2xxx: Client errors
+    # Errors detected by the server in the message sent by a client where the client did something wrong.
+    CLIENT_ERROR = 2000 # Generic client error
+    INVALID_OR_MISSING_PARAMETERS = 2001 # Invalid or missing parameters , for example: missing `last_updated` field in a PATCH request.
+    NOT_ENOUGH_INFORMATION = 2002 # Not enough information, for example: Authorization request with too little information.
+    UNKNOWN_LOCATION = 2003 # Unknown Location, for example: Command: START_SESSION with unknown location.
+    UNKNOWN_TOKEN = 2004 # Unknown Token, for example: 'real-time' authorization of an unknown Token.
+
+    # 5.3. 3xxx: Server errors
+    # Error during processing of the OCPI payload in the server. The message was syntactically correct but could not be processed by
+    # the server.
+    SERVER_ERROR = 3000 # Generic server error
+    UNABLE_TO_USE_THE_CLIENTS_API = 3001 # Unable to use the client’s API. For example during the credentials registration: When the initializing party requests data from the other party during the open POST call to its credentials endpoint. If one of the GETs can not be processed, the party should return this error in the POST response.
+    UNSUPPORTED_VERSION = 3002 # Unsupported version
+    NO_MATCHING_ENDPOINTS_OR_EXPECTED_ENDPOINTS_MISSING_BETWEEN_PARTIES = 3003 # No matching endpoints or expected endpoints missing between parties. Used during the registration process if the two parties do not have any mutual modules or endpoints available, or the minimal implementation expected by the other party is not been met.
+
+    # 5.4. 4xxx: Hub errors
+    # When a server encounters an error, client side error (2xxx) or server side error (3xxx), it sends the status code to the Hub. The Hub
+    #SHALL then forward this error to the client which sent the request (when the request was not a Broadcast Push).
+    # For errors that a Hub encounters while routing messages, the following OCPI status codes shall be used.
+    HUB_ERROR = 4000 # Generic error
+    UNKNOWN_RECEIVER = 4001 # Unknown receiver (TO address is unknown)
+    TIMEOUT_ON_FORWARDED_REQUEST = 4002 # Timeout on forwarded request (message is forwarded, but request times out)
+    CONNECTION_PROBLEM = 4003 # Connection problem (receiving party is not connected)
 
 
 
