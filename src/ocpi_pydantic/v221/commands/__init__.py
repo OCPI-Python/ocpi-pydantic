@@ -1,8 +1,9 @@
-from typing import ClassVar
-from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText
-from ocpi_pydantic.v221.enum import OcpiCommandResponseTypeEnum, OcpiCommandResultTypeEnum
+from typing import Annotated, ClassVar
+
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, HttpUrl, model_validator
 
+from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText
+from ocpi_pydantic.v221.enum import OcpiCommandResponseTypeEnum, OcpiCommandResultTypeEnum
 from ocpi_pydantic.v221.tokens import OcpiToken
 
 
@@ -76,8 +77,8 @@ class OcpiReserveNow(BaseModel):
     expiry_date: AwareDatetime = Field(description='The Date/Time when this reservation ends, in UTC.')
     reservation_id: str = Field(description='Reservation id, unique for this reservation.', max_length=36)
     location_id: str = Field(description='Location.id of the Location (belonging to the CPO this request is send to) for which to reserve an EVSE.', max_length=36)
-    evse_uid: str | None = Field(None, description='Optional EVSE.uid of the EVSE of this Location if a specific EVSE has to be reserved.', max_length=36)
-    authorization_reference: str | None = Field(None, description='Reference to the authorization given by the eMSP, when given, this reference will be provided in the relevant Session and/or CDR.', max_length=36)
+    evse_uid: Annotated[str | None, Field(description='Optional EVSE.uid of the EVSE of this Location if a specific EVSE has to be reserved.', max_length=36)] = None
+    authorization_reference: Annotated[str | None, Field(description='Reference to the authorization given by the eMSP, when given, this reference will be provided in the relevant Session and/or CDR.', max_length=36)] = None
 
 
 
@@ -130,9 +131,9 @@ class OcpiStartSession(BaseModel):
     response_url: HttpUrl = Field(description="URL that the CommandResult POST should be send to.")
     token: OcpiToken = Field(description='Token object the Charge Point has to use to start a new session.')
     location_id: str = Field(description='Location.id of the Location (belonging to the CPO this request is send to) on which a session is to be started.', max_length=36)
-    evse_uid: str | None = Field(None, description='Optional EVSE.uid of the EVSE of this Location on which a session is to be started. Required when connector_id is set.', max_length=36)
-    connector_id: str | None = Field(None, description='Optional Connector.id of the Connector of the EVSE on which a session is to be started.', max_length=36)
-    authorization_reference: str | None = Field(None, description='Reference to the authorization given by the eMSP, when given, this reference will be provided in the relevant Session and/or CDR.', max_length=36)
+    evse_uid: Annotated[str | None, Field(description='Optional EVSE.uid of the EVSE of this Location on which a session is to be started. Required when connector_id is set.', max_length=36)] = None
+    connector_id: Annotated[str | None, Field(description='Optional Connector.id of the Connector of the EVSE on which a session is to be started.', max_length=36)] = None
+    authorization_reference: Annotated[str | None, Field(description='Reference to the authorization given by the eMSP, when given, this reference will be provided in the relevant Session and/or CDR.', max_length=36)] = None
 
     @model_validator(mode='after')
     def validate_evse_uid(self):
@@ -187,7 +188,7 @@ class OcpiCommandResponse(BaseModel):
     '''
     result: OcpiCommandResponseTypeEnum = Field(description='Response from the CPO on the command request.')
     timeout: int = Field(description='Timeout for this command in seconds.')
-    message: list[OcpiDisplayText] = Field([], description='Human-readable description of the result (if one can be provided), multiple languages can be provided.')
+    message: Annotated[list[OcpiDisplayText], Field(description='Human-readable description of the result (if one can be provided), multiple languages can be provided.')] = []
 
 
 

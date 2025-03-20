@@ -1,3 +1,4 @@
+from typing import Annotated
 from pydantic import AwareDatetime, BaseModel, Field
 
 from ocpi_pydantic.v221.base import OcpiBaseResponse
@@ -60,4 +61,4 @@ class OcpiChargingPeriod(BaseModel):
     '''
     start_date_time : AwareDatetime = Field(description='Start timestamp of the charging period.')
     dimensions: list[OcpiCdrDimension] = Field(description='List of relevant values for this charging period.')
-    tariff_id: str | None = Field(None, description='Unique identifier of the Tariff that is relevant for this Charging Period.', max_length=36)
+    tariff_id: Annotated[str | None, Field(description='Unique identifier of the Tariff that is relevant for this Charging Period.', max_length=36)] = None

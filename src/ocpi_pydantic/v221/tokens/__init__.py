@@ -1,4 +1,5 @@
-from typing import ClassVar
+from typing import Annotated, ClassVar
+
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 from ocpi_pydantic.v221.enum import OcpiProfileTypeEnum, OcpiTokenTypeEnum, OcpiWhitelistTypeEnum
@@ -14,7 +15,7 @@ class OcpiEnergyContract(BaseModel):
     '''
 
     supplier_name: str = Field(description="Name of the energy supplier for this token.", max_length=64)
-    contract_id: str | None = Field(None, description='Contract ID at the energy supplier, that belongs to the owner of this token.')
+    contract_id: Annotated[str | None, Field(description='Contract ID at the energy supplier, that belongs to the owner of this token.')] = None
 
 
 
@@ -70,14 +71,14 @@ class OcpiToken(BaseModel):
     uid: str = Field(description='Unique ID by which this Token, combined with the Token type, can be identified.', max_length=36)
     type: OcpiTokenTypeEnum = Field(description='Type of the token')
     contract_id: str = Field(description='Uniquely identifies the EV Driver contract token within the eMSP’s platform (and suboperator platforms).', max_length=36)
-    visual_number: str | None = Field(None, description='Visual readable number/identification as printed on the Token (RFID card), might be equal to the contract_id.', max_length=64)
+    visual_number: Annotated[str | None, Field(description='Visual readable number/identification as printed on the Token (RFID card), might be equal to the contract_id.', max_length=64)] = None
     issuer: str = Field(description='Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.', max_length=64)
-    group_id: str | None = Field(None, description='This ID groups a couple of tokens.')
+    group_id: Annotated[str | None, Field(description='This ID groups a couple of tokens.')] = None
     valid: bool = Field(description='Is this Token valid')
     whitelist: OcpiWhitelistTypeEnum = Field(description='Indicates what type of white-listing is allowed.')
-    language: str | None = Field(None, description='Language Code ISO 639-1.', min_length=2, max_length=2)
-    default_profile_type: OcpiProfileTypeEnum | None = Field(None, description='The default Charging Preference.')
-    energy_contract: OcpiEnergyContract | None = Field(None, description='When the Charge Point supports using your own energy supplier/contract at a Charge Point, information about the energy supplier/contract is needed so the CPO knows which energy supplier to use.')
+    language: Annotated[str | None, Field(description='Language Code ISO 639-1.', min_length=2, max_length=2)] = None
+    default_profile_type: Annotated[OcpiProfileTypeEnum | None, Field(description='The default Charging Preference.')] = None
+    energy_contract: Annotated[OcpiEnergyContract | None, Field(description='When the Charge Point supports using your own energy supplier/contract at a Charge Point, information about the energy supplier/contract is needed so the CPO knows which energy supplier to use.')] = None
     last_updated: AwareDatetime = Field(description='Timestamp when this Token was last updated (or created).')
 
     _examples: ClassVar[list[dict]] = [

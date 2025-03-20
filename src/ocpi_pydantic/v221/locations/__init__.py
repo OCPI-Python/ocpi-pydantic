@@ -1,7 +1,8 @@
-from typing import ClassVar
+from typing import Annotated, ClassVar
+
+from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 from ocpi_pydantic.v221.enum import OcpiImageCategoryEnum
-from pydantic import BaseModel, ConfigDict, Field, HttpUrl
 
 
 
@@ -10,7 +11,7 @@ class OcpiImage(BaseModel):
     OCPI 8.4.15. Image class
     '''
     url: HttpUrl = Field(description='URL from where the image data can be fetched through a web browser.')
-    thumbnail: HttpUrl | None = Field(None, description='URL from where a thumbnail of the image can be fetched through a webbrowser.')
+    thumbnail: Annotated[HttpUrl | None, Field(description='URL from where a thumbnail of the image can be fetched through a webbrowser.')] = None
     category: OcpiImageCategoryEnum = Field(description='Describes what the image is used for.')
     type: str = Field(description='Image type like: gif, jpeg, png, svg.')
     width: int | None = Field(None, description='Width of the full scale image.', gt=0, le=99999)

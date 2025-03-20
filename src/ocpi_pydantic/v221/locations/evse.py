@@ -1,4 +1,5 @@
-from typing import ClassVar
+from typing import Annotated, ClassVar
+
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText
@@ -15,7 +16,7 @@ class OcpiStatusSchedule(BaseModel):
     即使有狀態排程，還是要即時更新實際的狀態。
     '''
     period_begin: AwareDatetime = Field(description='Begin of the scheduled period.')
-    period_end: AwareDatetime | None = Field(None, description='End of the scheduled period, if known.')
+    period_end: Annotated[AwareDatetime | None, Field(description='End of the scheduled period, if known.')] = None
     status: OcpiStatusEnum = Field(description='Status value during the scheduled period.')
 
 
@@ -27,7 +28,7 @@ class OcpiEvse(BaseModel):
     uid: str = Field(description='Uniquely identifies the EVSE within the CPOs platform (and suboperator platforms).', max_length=36)
     evse_id: str | None = Field(None, description='Compliant with the following specification for EVSE ID from "eMI3 standard version V1.0" (http://emi3group.com/documents-links/) "Part 2: business objects."', max_length=48)
     status: OcpiStatusEnum = Field(description='Indicates the current status of the EVSE.')
-    status_schedule: list[OcpiStatusSchedule] = Field([], description='Indicates a planned status update of the EVSE.')
+    status_schedule: Annotated[list[OcpiStatusSchedule], Field(description='Indicates a planned status update of the EVSE.')] = []
     capabilities: list[OcpiCapabilityEnum] = Field([], description='List of functionalities that the EVSE is capable of.')
     connectors: list[OcpiConnector] = Field(description='List of available connectors on the EVSE.', min_length=1)
     floor_level: str | None = Field(None, description='Level on which the Charge Point is located (in garage buildings) in the locally displayed numbering scheme.', max_length=4)

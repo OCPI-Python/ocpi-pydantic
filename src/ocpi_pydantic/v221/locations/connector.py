@@ -1,7 +1,8 @@
-from typing import ClassVar
-from ocpi_pydantic.v221.base import OcpiBaseResponse
+from typing import Annotated, ClassVar
+
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, HttpUrl
 
+from ocpi_pydantic.v221.base import OcpiBaseResponse
 from ocpi_pydantic.v221.enum import OcpiConnectorFormatEnum, OcpiConnectorTypeEnum, OcpiPowerTypeEnum
 
 
@@ -49,8 +50,8 @@ class OcpiConnector(BaseModel):
     power_type: OcpiPowerTypeEnum
     max_voltage: int = Field(description='Maximum voltage of the connector (line to neutral for AC_3_PHASE), in volt [V].', gt=0)
     max_amperage: int = Field(description='Maximum amperage of the connector, in ampere [A].', gt=0)
-    max_electric_power: int | None = Field(None, description='Maximum electric power that can be delivered by this connector, in Watts (W).', gt=0)
-    tariff_ids: list[str] = Field([], description='Identifiers of the currently valid charging tariffs.')
+    max_electric_power: Annotated[int | None, Field(description='Maximum electric power that can be delivered by this connector, in Watts (W).', gt=0)] = None
+    tariff_ids: Annotated[list[str], Field(description='Identifiers of the currently valid charging tariffs.')] = []
     terms_and_conditions: HttpUrl | None = Field(None, description='URL to the operator’s terms and conditions.')
     last_updated: AwareDatetime = Field(description='Timestamp when this Connector was last updated (or created).')
 

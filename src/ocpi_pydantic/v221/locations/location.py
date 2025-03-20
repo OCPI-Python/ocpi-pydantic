@@ -1,5 +1,5 @@
 from datetime import datetime, timezone
-from typing import ClassVar
+from typing import Annotated, ClassVar
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator, model_validator
 
@@ -18,7 +18,7 @@ class OcpiPublishTokenType(BaseModel):
     - 如果有 uid，type 也應該要有。
     - 如果有 visual_number，issuer 也應該要有。
     '''
-    uid: str | None = Field(None, description='Unique ID by which this Token can be identified.', max_length=36)
+    uid: Annotated[str | None, Field(description='Unique ID by which this Token can be identified.', max_length=36)] = None
     type: OcpiTokenTypeEnum | None = Field(None, description='Type of the token.')
     visual_number: str | None = Field(None, description='Visual readable number/identification as printed on the Token (RFID card).', max_length=64)
     issuer: str | None = Field(None, description='Issuing company, most of the times the name of the company printed on the token (RFID card), not necessarily the eMSP.', max_length=64)
@@ -88,7 +88,7 @@ class OcpiHours(BaseModel):
     OCPI 8.4.14. Hours class
     '''
     twentyfourseven: bool = Field(description='True to represent 24 hours a day and 7 days a week, except the given exceptions.')
-    regular_hours: list[OcpiRegularHours] = Field([], description='Regular hours, weekday-based.')
+    regular_hours: Annotated[list[OcpiRegularHours], Field(description='Regular hours, weekday-based.')] = []
     exceptional_openings: list[OcpiExceptionalPeriod] = Field([], description='Exceptions for specified calendar dates, time-range based.')
     exceptional_closings: list[OcpiExceptionalPeriod] = Field([], description='Exceptions for specified calendar dates, time-range based.')
 
@@ -213,7 +213,7 @@ class OcpiLocation(BaseModel):
     publish: bool = Field(description='Defines if a Location may be published on an website or app etc.')
     publish_allowed_to: list[OcpiPublishTokenType] = Field([], description='This field may only be used when the publish field is set to false.')
 
-    time_zone: str = Field('Asia/Taipei', description='One of IANA tzdata’s TZ-values representing the time zone of the location.')
+    time_zone: str = Field(description='One of IANA tzdata’s TZ-values representing the time zone of the location.')
     coordinates: OcpiGeoLocation = Field(description='Coordinates of the location.')
     postal_code: str | None = Field(None, description='Postal code of the location, may only be omitted when the location has no postal code.', max_length=10)
     country: str = Field(description='ISO 3166-1 alpha-3 code for the country of this location.', max_length=3)
@@ -221,7 +221,7 @@ class OcpiLocation(BaseModel):
     city: str = Field(description='City or town.', max_length=45)
     address: str = Field(description='Street/block name and house number if available.', max_length=45)
     opening_times: OcpiHours | None = Field(None, description='The times when the EVSEs at the location can be accessed for charging.')
-    charging_when_closed: bool | None = Field(True, description='Indicates if the EVSEs are still charging outside the opening hours of the location. Default: true')
+    charging_when_closed: Annotated[bool | None, Field(description='Indicates if the EVSEs are still charging outside the opening hours of the location. Default: true')] = True
 
     related_locations: list[AdditionalGeoLocation] = Field([], description='Geographical location of related points relevant to the user.')
     parking_type: OcpiParkingTypeEnum | None = Field(None, description='The general type of parking at the charge point location.')

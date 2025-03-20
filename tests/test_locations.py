@@ -1,4 +1,5 @@
 from datetime import datetime, timezone
+
 from ocpi_pydantic.v221.locations.location import OcpiExceptionalPeriod
 
 

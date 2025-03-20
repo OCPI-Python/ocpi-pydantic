@@ -1,4 +1,4 @@
-from typing import ClassVar
+from typing import Annotated, ClassVar
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
@@ -59,7 +59,7 @@ class OcpiSession(BaseModel):
     party_id: str = Field(description="ID of the CPO that 'owns' this Session (following the ISO-15118 standard).", min_length=3, max_length=3)
     id: str = Field(description='The unique id that identifies the charging session in the CPO platform.', max_length=36)
     start_date_time: AwareDatetime = Field(description='The timestamp when the session became ACTIVE in the Charge Point.')
-    end_date_time: AwareDatetime | None = Field(None, description='The timestamp when the session was completed/finished, charging might have finished before the session ends, for example: EV is full, but parking cost also has to be paid.')
+    end_date_time: Annotated[AwareDatetime | None, Field(description='The timestamp when the session was completed/finished, charging might have finished before the session ends, for example: EV is full, but parking cost also has to be paid.')] = None
     kwh: int = Field(description='How many kWh were charged.')
     cdr_token: OcpiCdrToken = Field(description='Token used to start this charging session, including all the relevant information to identify the unique token.')
     auth_method: OcpiAuthMethodEnum = Field(description='Method used for authentication.')
@@ -69,7 +69,7 @@ class OcpiSession(BaseModel):
     connector_id : str = Field(description='Connector.id of the Connector of this Location where the charging session is/was happening.', max_length=36)
     meter_id: str | None = Field(None, description='Optional identification of the kWh meter.', max_length=255)
     currency: str = Field(description='ISO 4217 code of the currency used for this session.', max_length=3)
-    charging_periods: list[OcpiChargingPeriod] = Field([], description='An optional list of Charging Periods that can be used to calculate and verify the total cost.')
+    charging_periods: Annotated[list[OcpiChargingPeriod], Field(description='An optional list of Charging Periods that can be used to calculate and verify the total cost.')] = []
     total_cost: OcpiPrice | None = Field(None, description='The total cost of the session in the specified currency.')
     status: OcpiSessionStatusEnum = Field(description='The status of the session.')
     last_updated: AwareDatetime = Field(description='Timestamp when this Session was last updated (or created).')
@@ -176,7 +176,7 @@ class OcpiChargingPreferences(BaseModel):
     profile_type: OcpiProfileTypeEnum = Field(description='Type of Smart Charging Profile selected by the driver.ß')
     departure_time: AwareDatetime | None = Field(None, description='Expected departure.')
     energy_need: float | None = Field(None, description='Requested amount of energy in kWh.')
-    discharge_allowed: bool = Field(False, description='The driver allows their EV to be discharged when needed.')
+    discharge_allowed: Annotated[bool, Field(description='The driver allows their EV to be discharged when needed.')] = False
 
 
 

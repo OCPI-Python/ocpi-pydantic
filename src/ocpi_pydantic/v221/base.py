@@ -1,6 +1,6 @@
 from datetime import datetime, timezone
 from decimal import Decimal
-from typing import ClassVar, Generic, TypeVar
+from typing import Annotated, ClassVar, Generic, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -25,7 +25,7 @@ class OcpiPrice(BaseModel):
     OCPI 16.5. Price class
     '''
     excl_vat: Decimal = Field(description='Price/Cost excluding VAT.')
-    incl_vat: Decimal | None = Field(None, description='Price/Cost including VAT.')
+    incl_vat: Annotated[Decimal | None, Field(description='Price/Cost including VAT.')] = None
 
 
 
@@ -39,9 +39,9 @@ class OcpiBaseResponse(BaseModel, Generic[OcpiResponseDataGenericType]):
 
 
     '''
-    data: OcpiResponseDataGenericType | None = Field(None, description='Contains the actual response data object or list of objects from each request.')
+    data: Annotated[OcpiResponseDataGenericType | None, Field(description='Contains the actual response data object or list of objects from each request.')] = None
     status_code: OcpiStatusCodeEnum | OcpiStatus = Field(description='OCPI status code.')
-    status_message: str | None = Field(None, description='An optional status message which may help when debugging.')
+    status_message: Annotated[str | None, Field(description='An optional status message which may help when debugging.')] = None
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc).replace(microsecond=0), description='The time this message was generated.')
 
     _examples: ClassVar[dict] = [
