@@ -182,7 +182,7 @@ class OcpiCommandResponse(BaseModel):
     to give a quick as possible response to another system or driver app. It is important for the eMSP to know the timeout on a certain
     command.
 
-    - `timeout`:  
+    - `timeout`:
         Timeout for this command in seconds. When within this timeout, the eMSP can assume that the message might never be
         send.
     '''
@@ -203,10 +203,6 @@ class OcpiCommandResponseResponse(OcpiBaseResponse):
 class OcpiCommandResult(BaseModel):
     '''
     OCPI 13.3.3. CommandResult Object
-
-    - `timeout`:  
-        Timeout for this command in seconds. When within this timeout, the eMSP can assume that the message might never be
-        send.
     '''
     result: OcpiCommandResultTypeEnum = Field(description='Response from the CPO on the command request.')
     message: Annotated[list[OcpiDisplayText], Field(description='Human-readable description of the reason (if one can be provided), multiple languages can be provided.')] = []
