@@ -209,4 +209,4 @@ class OcpiCommandResult(BaseModel):
         send.
     '''
     result: OcpiCommandResultTypeEnum = Field(description='Response from the CPO on the command request.')
-    message: list[OcpiDisplayText] = Field([], description='Human-readable description of the reason (if one can be provided), multiple languages can be provided.')
+    message: Annotated[list[OcpiDisplayText], Field(description='Human-readable description of the reason (if one can be provided), multiple languages can be provided.')] = []
