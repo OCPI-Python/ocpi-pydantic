@@ -2,7 +2,8 @@ from typing import Annotated, ClassVar
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
-from ocpi_pydantic.v221.enum import OcpiProfileTypeEnum, OcpiTokenTypeEnum, OcpiWhitelistTypeEnum
+from ocpi_pydantic.v221.base import OcpiDisplayText
+from ocpi_pydantic.v221.enum import OcpiAllowedTypeEnum, OcpiProfileTypeEnum, OcpiTokenTypeEnum, OcpiWhitelistTypeEnum
 
 
 
@@ -14,7 +15,7 @@ class OcpiEnergyContract(BaseModel):
     Charge Point.
     '''
 
-    supplier_name: str = Field(description="Name of the energy supplier for this token.", max_length=64)
+    supplier_name: str = Field(description='Name of the energy supplier for this token.', max_length=64)
     contract_id: Annotated[str | None, Field(description='Contract ID at the energy supplier, that belongs to the owner of this token.')] = None
 
 
@@ -82,6 +83,19 @@ class OcpiToken(BaseModel):
     last_updated: AwareDatetime = Field(description='Timestamp when this Token was last updated (or created).')
 
     _examples: ClassVar[list[dict]] = [
+        { # A new Token
+            "country_code": "NL",
+            "party_id": "TNM",
+            "uid": "012345678",
+            "type": "RFID",
+            "contract_id": "NL8ACC12E46L89",
+            "visual_number": "DF000-2001-8999-1",
+            "issuer": "TheNewMotion",
+            "group_id": "DF000-2001-8999",
+            "valid": True,
+            "whitelist": "ALWAYS",
+            "last_updated": "2015-06-29T22:39:09Z"
+        },
         { # Simple APP_USER example
             "country_code": "DE",
             "party_id": "TNM",
@@ -112,3 +126,35 @@ class OcpiToken(BaseModel):
     ]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})
 
+
+
+class OcpiLocationReferences(BaseModel):
+    '''
+    OCPI 12.4.3. LocationReferences class
+
+    References to location details.
+    '''
+
+    location_id: str = Field(description='Unique identifier for the location.', max_length=36)
+    evse_uids: Annotated[list[str], Field(description='Unique identifiers for EVSEs within the CPO’s platform for the EVSE within the given location.', max_length=36)] = []
+
+
+
+class OcpiAuthorizationInfo(BaseModel):
+    '''
+    OCPI 12.3.1. AuthorizationInfo Object
+
+    - `location`:
+        Optional reference to the location if it was included in the request, and if
+        the EV driver is allowed to charge at that location. Only the EVSEs the
+        EV driver is allowed to charge at are returned.
+    - `authorization_reference`:
+        Reference to the authorization given by the eMSP, when given, this
+        reference will be provided in the relevant Session and/or CDR.
+    '''
+
+    allowed: OcpiAllowedTypeEnum = Field(description='Status of the Token, and whether charging is allowed at the optionally given location')
+    token: OcpiToken = Field(description='The complete Token object for which this authorization was requested.')
+    location: Annotated[OcpiLocationReferences | None, Field(description='Optional reference to the location if it was included in the request, and if the EV driver is allowed to charge at that location.')] = None
+    authorization_reference: Annotated[str | None, Field(description='Reference to the authorization given by the eMSP')] = None
+    info: Annotated[OcpiDisplayText | None, Field(description='')] = None

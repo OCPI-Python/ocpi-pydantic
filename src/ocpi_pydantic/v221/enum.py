@@ -401,13 +401,23 @@ class OcpiCrdDeminsionTypeEnum(str, Enum):
 
 
 
+class OcpiAllowedTypeEnum(str, Enum):
+    '''
+    OCPI 12.4.1. AllowedType enum
+    '''
+    ALLOWED = 'ALLOWED' # This Token is allowed to charge (at this location).
+    BLOCKED = 'BLOCKED' # This Token is blocked.
+    EXPIRED = 'EXPIRED' # This Token has expired.
+    NO_CREDIT = 'NO_CREDIT' # This Token belongs to an account that has not enough credits to charge (at the given location).
+    NOT_ALLOWED = 'NOT_ALLOWED' # Token is valid, but is not allowed to charge at the given location.
+
+
+
 class OcpiTokenTypeEnum(str, Enum):
     '''
     OCPI 12.4.4. TokenType enum
 
-    Note:
-
-    The eMSP is RECOMMENDED to push Tokens with type: `AD_HOC_USER` or `APP_USER` with `whitelist` set to
+    NOTE: The eMSP is RECOMMENDED to push Tokens with type: `AD_HOC_USER` or `APP_USER` with `whitelist` set to
     `NEVER`. Whitelists are very useful for RFID type Tokens, but the `AD_HOC_USER`/`APP_USER` Tokens are used to
     start Sessions from an App etc. so whitelisting them has no advantages.
     '''
