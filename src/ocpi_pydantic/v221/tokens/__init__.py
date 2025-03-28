@@ -2,7 +2,7 @@ from typing import Annotated, ClassVar
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
-from ocpi_pydantic.v221.base import OcpiDisplayText
+from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText
 from ocpi_pydantic.v221.enum import OcpiAllowedTypeEnum, OcpiProfileTypeEnum, OcpiTokenTypeEnum, OcpiWhitelistTypeEnum
 
 
@@ -124,6 +124,14 @@ class OcpiToken(BaseModel):
             "last_updated": "2018-12-10T17:25:10Z"
         },
     ]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
+class OcpiTokenResponse(OcpiBaseResponse):
+    data: OcpiToken
+
+    _examples: ClassVar[dict] = [{'data': OcpiToken._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z'}]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})
 
 
