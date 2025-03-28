@@ -4,7 +4,7 @@ from typing import Annotated, ClassVar, Generic, TypeVar
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from ocpi_pydantic.v221.enum import OcpiStatus, OcpiStatusCodeEnum
+from ocpi_pydantic.v221.enum import OcpiStatusCodeEnum
 
 
 
@@ -40,7 +40,7 @@ class OcpiBaseResponse(BaseModel, Generic[OcpiResponseDataGenericType]):
 
     '''
     data: Annotated[OcpiResponseDataGenericType | None, Field(description='Contains the actual response data object or list of objects from each request.')] = None
-    status_code: OcpiStatusCodeEnum | OcpiStatus = Field(description='OCPI status code.')
+    status_code: OcpiStatusCodeEnum = Field(description='OCPI status code.')
     status_message: Annotated[str | None, Field(description='An optional status message which may help when debugging.')] = None
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc).replace(microsecond=0), description='The time this message was generated.')
 
