@@ -130,7 +130,7 @@ class OcpiSession(BaseModel):
 
 
 class OcpiSessionListResponse(OcpiBaseResponse):
-    data: list[OcpiSession]
+    data: list[OcpiSession] = ...
 
     _examples: ClassVar[dict] = [{
         'data': [OcpiSession._examples[0]], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
@@ -140,7 +140,7 @@ class OcpiSessionListResponse(OcpiBaseResponse):
 
 
 class OcpiSessionResponse(OcpiBaseResponse):
-    data: OcpiSession
+    data: OcpiSession = ...
 
     _examples: ClassVar[dict] = [{
         'data': OcpiSession._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
@@ -181,7 +181,7 @@ class OcpiChargingPreferences(BaseModel):
 
 
 class OcpiChargingPreferencesResponse(OcpiBaseResponse):
-    data: OcpiChargingPreferencesResponseEnum
+    data: OcpiChargingPreferencesResponseEnum = ...
 
     _examples: ClassVar[dict] = [{
         'data': OcpiSession._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',

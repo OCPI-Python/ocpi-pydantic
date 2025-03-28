@@ -1,7 +1,7 @@
 from typing import Annotated
+
 from pydantic import AwareDatetime, BaseModel, Field
 
-from ocpi_pydantic.v221.base import OcpiBaseResponse
 from ocpi_pydantic.v221.enum import OcpiCrdDeminsionTypeEnum, OcpiTokenTypeEnum
 
 

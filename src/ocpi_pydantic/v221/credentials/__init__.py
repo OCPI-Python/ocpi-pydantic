@@ -93,7 +93,7 @@ class OcpiCredentials(BaseModel):
 
 
 class OcpiCredentialsResponse(OcpiBaseResponse):
-    data: OcpiCredentials
+    data: OcpiCredentials = ...
 
     _examples: ClassVar[dict] = [{ # Version details response (one object)
         'data': OcpiCredentials._example, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',

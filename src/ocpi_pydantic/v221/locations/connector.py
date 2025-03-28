@@ -66,7 +66,7 @@ class OcpiConnector(BaseModel):
 
 
 class OcpiConnectorResponse(OcpiBaseResponse):
-    data: OcpiConnector
+    data: OcpiConnector = ...
 
     _examples: ClassVar[dict] = [{ # Version details response (one object)
         'data': OcpiConnector._example, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',

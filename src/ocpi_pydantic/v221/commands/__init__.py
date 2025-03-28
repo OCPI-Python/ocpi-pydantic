@@ -193,7 +193,7 @@ class OcpiCommandResponse(BaseModel):
 
 
 class OcpiCommandResponseResponse(OcpiBaseResponse):
-    data: OcpiCommandResponse
+    data: OcpiCommandResponse = ...
 
     _examples: ClassVar[dict] = [{'data': {}, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z'}]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})
