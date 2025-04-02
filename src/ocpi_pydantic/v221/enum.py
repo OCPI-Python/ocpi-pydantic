@@ -124,6 +124,16 @@ class OcpiInterfaceRoleEnum(str, Enum):
 class OcpiCapabilityEnum(str, Enum):
     '''
     OCPI 8.4.3. Capability enum
+
+    The capabilities of an EVSE.
+
+    When a Charge Point supports ad-hoc payments with a payment terminal, please use a combination of the following values to
+    explain the possibilities of the terminal: CHIP_CARD_SUPPORT, CONTACTLESS_CARD_SUPPORT, CREDIT_CARD_PAYABLE,
+    DEBIT_CARD_PAYABLE, PED_TERMINAL.
+
+    There are Charge Points in the field that do not yet support OCPP 2.x. If these Charge Points have multiple connectors per EVSE,
+    the CPO needs to know which connector to start when receiving a StartSession for the given EVSE. If this is the case, the CPO
+    should set the `START_SESSION_CONNECTOR_REQUIRED` capability on the given EVSE.
     '''
     CHARGING_PROFILE_CAPABLE = 'CHARGING_PROFILE_CAPABLE' # The EVSE supports charging profiles.
     CHARGING_PREFERENCES_CAPABLE = 'CHARGING_PREFERENCES_CAPABLE' # The EVSE supports charging profiles.
