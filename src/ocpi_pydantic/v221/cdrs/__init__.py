@@ -57,12 +57,13 @@ class OcpiCdrLocation(BaseModel):
     The CdrLocation class contains only the relevant information from the Location object that is needed in a CDR.
     '''
     id: str = Field(
+        max_length=36,
         description='''
         Uniquely identifies the location within the CPO’s platform (and suboperator
         platforms). This field can never be changed, modified or renamed.
         ''',
     )
-    name: Annotated[str | None, Field(description='Display name of the location.')] = None
+    name: Annotated[str | None, Field(max_length=255, description='Display name of the location.')] = None
     address: str = Field(max_length=45, description='Street/block name and house number if available.')
     city: str = Field(max_length=45, description='City or town.')
     postal_code: Annotated[str | None, Field(
@@ -206,7 +207,7 @@ class OcpiSignedData(BaseModel):
     encoding_method_version: Annotated[int | None, Field(description='Version of the EncodingMethod (when applicable)')] = None
     public_key: Annotated[int | None, Field(max_length=512, description='Public key used to sign the data, base64 encoded.')] = None
     signed_values: list[OcpiSignedValue] = Field(description='One or more signed values.')
-    url: Annotated[int | None, Field(
+    url: Annotated[str | None, Field(
         max_length=512,
         description='''
         URL that can be shown to an EV driver. This URL gives the EV driver

@@ -203,6 +203,21 @@ class OcpiEnergyMix(BaseModel):
 class OcpiLocation(BaseModel):
     '''
     OCPI 8.3.1. Location Object
+    
+    The _Location_ object describes the location and its properties where a group of EVSEs that belong together are installed. Typically,
+    the _Location_ object is the exact location of the group of EVSEs, but it can also be the entrance of a parking garage which contains
+    these EVSEs. The exact way to reach each EVSE can be further specified by its own properties.
+
+    Locations may be shown in apps or on websites etc. when the flag: `publish` is set to `true`. Locations that have this flag set to
+    `false` SHALL not be shown in an app or on a website etc. unless it is to the owner of a Token in the `publish_allowed_to` list.
+    Even parties like NSP or eMSP that do not 'own' this Token MAY show this location on an app or website, but only to the owner of
+    that Token. If the user of their app/website has provided information about his/her Token, And that information matches all the fields
+    of one of the PublishToken tokens in the list, then they are allowed to show this location to their user. It is not allowed in OCPI to
+    use a Token that is not 'owned' by the eMSP itself to start a charging session.
+
+    Private Charge Points, home or business that do not need to be published on apps, and do not require remote control via OCPI,
+    SHOULD not be PUT via the OCPI Locations module. Reimbursement via eMSP is still possible by sending CDRs to eMSP, the
+    Locations module is not needed for this..
     '''
 
     country_code: str = Field(description="ISO-3166 alpha-2 country code of the CPO that 'owns' this Location.", min_length=2, max_length=2)
@@ -238,7 +253,7 @@ class OcpiLocation(BaseModel):
     owner: OcpiBusinessDetails | None = Field(None, description='Information of the owner if available.')
     facilities: list[OcpiFacilityEnum] = Field([], description='Optional list of facilities this charging location directly belongs to.')
     images: list[OcpiImage] = Field([], description='Links to images related to the location such as photos or logos.')
-    energy_mix: OcpiEnergyMix | None = Field(None, description='Details on the energy supplied at this location.')
+    energy_mix: Annotated[OcpiEnergyMix | None, Field(description='Details on the energy supplied at this location.')] = None
     last_updated: AwareDatetime = Field(description='Timestamp when this Location or one of its EVSEs or Connectors were last updated (or created).')
 
     _examples: ClassVar[list[dict]] = [

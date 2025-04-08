@@ -43,8 +43,8 @@ class OcpiBusinessDetails(BaseModel):
     '''
     OCPI 8.4.2. BusinessDetails class
     '''
-    name: str = Field(description='Name of the operator.')
-    website: str | None = Field(None, description='Link to the operator’s website.')
+    name: str = Field(max_length=100, description='Name of the operator.')
+    website: HttpUrl | None = Field(None, description='Link to the operator’s website.')
     logo: OcpiImage | None = Field(None, description='Image link to the operator’s logo.')
 
     _example: ClassVar[dict] = {

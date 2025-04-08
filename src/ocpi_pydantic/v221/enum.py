@@ -409,6 +409,55 @@ class OcpiCrdDeminsionTypeEnum(str, Enum):
 
 
 
+class OcpiDayOfWeekEnum(str, Enum):
+    '''
+    OCPI 11.4.1. DayOfWeek enum
+    '''
+    MONDAY = 'MONDAY' # Monday
+    TUESDAY = 'TUESDAY' # Tuesday
+    WEDNESDAY = 'WEDNESDAY' # Wednesday
+    THURSDAY = 'THURSDAY' # Thursday
+    FRIDAY = 'FRIDAY' # Friday
+    SATURDAY = 'SATURDAY' # Saturday
+    SUNDAY = 'SUNDAY' # Sunday
+
+
+
+class OcpiReservationRestrictionTypeEnum(str, Enum):
+    '''
+    OCPI 11.4.3. ReservationRestrictionType enum
+
+    NOTE: When a Tariff has both, `RESERVATION` and `RESERVATION_EXPIRES` TariffElements, where both TariffElements
+    have a TIME PriceComponent, then the time based cost of an expired reservation will be calculated based on the
+    `RESERVATION_EXPIRES` TariffElement.
+    '''
+    RESERVATION = 'RESERVATION' # Used in TariffElements to describe costs for a reservation.
+    RESERVATION_EXPIRES = 'RESERVATION_EXPIRES' # Used in TariffElements to describe costs for a reservation that expires (i.e. driver does not start a charging session before expiry_date of the reservation).
+
+
+class OcpiTariffDimensionTypeEnum(str, Enum):
+    '''
+    OCPI 11.4.5. TariffDimensionType enum
+    '''
+    ENERGY = 'ENERGY' # Defined in kWh, `step_size`` multiplier: 1 Wh
+    FLAT = 'FLAT' # Flat fee without unit for `step_size`
+    PARKING_TIME = 'PARKING_TIME' # Time not charging: defined in hours, `step_size`` multiplier: 1 second
+    TIME = 'TIME' # Time charging: defined in hours, step_size multiplier: 1 second Can also be used in combination with a RESERVATION restriction to describe the price of the reservation time.
+
+
+
+class OcpiTariffTypeEnum(str, Enum):
+    '''
+    OCPI 11.4.7. TariffType enum
+    '''
+    AD_HOC_PAYMENT = 'AD_HOC_PAYMENT' # Used to describe that a Tariff is valid when ad-hoc payment is used at the Charge Point (for example: Debit or Credit card payment terminal).
+    PROFILE_CHEAP = 'PROFILE_CHEAP' # Used to describe that a Tariff is valid when Charging Preference: CHEAP is set for the session.
+    PROFILE_FAST = 'PROFILE_FAST' # Used to describe that a Tariff is valid when Charging Preference: FAST is set for the session.
+    PROFILE_GREEN = 'PROFILE_GREEN' # Used to describe that a Tariff is valid when Charging Preference: GREEN is set for the session.
+    REGULAR = 'REGULAR' # Used to describe that a Tariff is valid when using an RFID, without any Charging Preference, or when Charging Preference: REGULAR is set for the session.
+
+
+
 class OcpiAllowedTypeEnum(str, Enum):
     '''
     OCPI 12.4.1. AllowedType enum
