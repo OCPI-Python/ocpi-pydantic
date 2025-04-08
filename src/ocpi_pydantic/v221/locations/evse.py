@@ -26,7 +26,12 @@ class OcpiEvse(BaseModel):
     OCPI 8.3.2. EVSE Object
     '''
     uid: str = Field(description='Uniquely identifies the EVSE within the CPOs platform (and suboperator platforms).', max_length=36)
-    evse_id: str | None = Field(None, description='Compliant with the following specification for EVSE ID from "eMI3 standard version V1.0" (http://emi3group.com/documents-links/) "Part 2: business objects."', max_length=48)
+    evse_id: Annotated[str | None, Field(
+        max_length=48,
+        description='''
+        Compliant with the following specification for EVSE ID from "eMI3 standard version V1.0" (http://emi3group.com/documents-links/) "Part 2: business objects."
+        ''',
+    )] = None
     status: OcpiStatusEnum = Field(description='Indicates the current status of the EVSE.')
     status_schedule: Annotated[list[OcpiStatusSchedule], Field(description='Indicates a planned status update of the EVSE.')] = []
     capabilities: list[OcpiCapabilityEnum] = Field([], description='List of functionalities that the EVSE is capable of.')

@@ -385,9 +385,7 @@ class OcpiCrdDeminsionTypeEnum(str, Enum):
     `CDRs` and `Sessions`. Some of these values are not useful for `CDRs`, and SHALL therefor only be used in `Sessions`, these are
     marked in the column: Session Only
 
-    Note:
-
-    OCPI makes it possible to provide SoC in the Session object. This information can be useful to show the current
+    NOTE: OCPI makes it possible to provide SoC in the Session object. This information can be useful to show the current
     State of Charge to an EV driver during charging. Implementers should be aware that SoC is only available at
     some DC Chargers. Which is currently a small amount of the total amount of Charge Points. Of these DC
     Chargers, only a small percentage currently provides SoC via OCPP to the CPO. Then there is also the question

@@ -12,19 +12,42 @@ class OcpiSession(BaseModel):
     '''
     OCPI 9.3.1. Session Object
 
-    - `start_date_time`:  
+    NOTE: Different `authorization_reference` values might happen when for example a ReserveNow had a different
+    `authorization_reference` then the value returned by a real-time authorization.
+    '''
+
+    country_code: str = Field(description="ISO-3166 alpha-2 country code of the CPO that 'owns' this Session.", min_length=2, max_length=2)
+    party_id: str = Field(description="ID of the CPO that 'owns' this Session (following the ISO-15118 standard).", min_length=3, max_length=3)
+    id: str = Field(description='The unique id that identifies the charging session in the CPO platform.', max_length=36)
+    start_date_time: AwareDatetime = Field(
+        description='''
         The timestamp when the session became ACTIVE in the Charge
         Point.
         When the session is still PENDING, this field SHALL be set to the
         time the Session was created at the Charge Point. When a Session
         goes from PENDING to ACTIVE, this field SHALL be updated to the
         moment the Session went to ACTIVE in the Charge Point.
-    - `auth_method`:
+        ''',
+    )
+    end_date_time: Annotated[AwareDatetime | None, Field(description='The timestamp when the session was completed/finished, charging might have finished before the session ends, for example: EV is full, but parking cost also has to be paid.')] = None
+    kwh: int = Field(description='How many kWh were charged.')
+    cdr_token: OcpiCdrToken = Field(
+        description='''
+        Token used to start this charging session, including all the relevant
+        information to identify the unique token.
+        ''',
+    )
+    auth_method: OcpiAuthMethodEnum = Field(
+        description='''
         Method used for authentication. This might change during a
         session, for example when the session was started with a
         reservation: ReserveNow: `COMMAND`. When the driver arrives and
         starts charging using a Token that is whitelisted: `WHITELIST`.
-    - `authorization_reference`:
+        ''',
+    )
+    authorization_reference: Annotated[str | None, Field(
+        max_length=36,
+        description='''
         Reference to the authorization given by the eMSP. When the eMSP
         provided an `authorization_reference` in either: real-time
         authorization, StartSession or ReserveNow this field SHALL
@@ -32,45 +55,39 @@ class OcpiSession(BaseModel):
         `authorization_reference` values have been given by the
         eMSP that are relevant to this Session, the last given value SHALL
         be used here.
-    - `evse_uid`:
+        ''',
+    )] = None
+    location_id: str = Field(description='Location.id of the Location object of this CPO, on which the charging session is/was happening.', max_length=36)
+    evse_uid : str = Field(
+        max_length=36,
+        description='''
         EVSE.uid of the EVSE of this Location on which the charging
         session is/was happening. Allowed to be set to: `#NA` when this
         session is created for a reservation, but no EVSE yet assigned to
         the driver.
-    - `connector_id`:
+        ''',
+    )
+    connector_id: str = Field(
+        max_length=36,
+        description='''
         Connector.id of the Connector of this Location where the charging
         session is/was happening. Allowed to be set to: `#NA` when this
         session is created for a reservation, but no connector yet assigned
         to the driver.
-    - `total_cost`:
+        ''',
+    )
+    meter_id: Annotated[str | None, Field(max_length=255, description='Optional identification of the kWh meter.')] = None
+    currency: str = Field(max_length=3, description='ISO 4217 code of the currency used for this session.')
+    charging_periods: Annotated[list[OcpiChargingPeriod], Field(description='An optional list of Charging Periods that can be used to calculate and verify the total cost.')] = []
+    total_cost: Annotated[OcpiPrice | None, Field(
+        description='''
         The total cost of the session in the specified currency. This is the
         price that the eMSP will have to pay to the CPO. A total_cost of
         0.00 means free of charge. When omitted, i.e. no price information
         is given in the Session object, it does not imply the session is/was
         free of charge.
-    
-    Note:
-
-    Different `authorization_reference` values might happen when for example a ReserveNow had a different
-    `authorization_reference` then the value returned by a real-time authorization.
-    '''
-
-    country_code: str = Field(description="ISO-3166 alpha-2 country code of the CPO that 'owns' this Session.", min_length=2, max_length=2)
-    party_id: str = Field(description="ID of the CPO that 'owns' this Session (following the ISO-15118 standard).", min_length=3, max_length=3)
-    id: str = Field(description='The unique id that identifies the charging session in the CPO platform.', max_length=36)
-    start_date_time: AwareDatetime = Field(description='The timestamp when the session became ACTIVE in the Charge Point.')
-    end_date_time: Annotated[AwareDatetime | None, Field(description='The timestamp when the session was completed/finished, charging might have finished before the session ends, for example: EV is full, but parking cost also has to be paid.')] = None
-    kwh: int = Field(description='How many kWh were charged.')
-    cdr_token: OcpiCdrToken = Field(description='Token used to start this charging session, including all the relevant information to identify the unique token.')
-    auth_method: OcpiAuthMethodEnum = Field(description='Method used for authentication.')
-    authorization_reference: str | None = Field(None, description='Reference to the authorization given by the eMSP.', max_length=36)
-    location_id: str = Field(description='Location.id of the Location object of this CPO, on which the charging session is/was happening.', max_length=36)
-    evse_uid : str = Field(description='EVSE.uid of the EVSE of this Location on which the charging session is/was happening.', max_length=36)
-    connector_id : str = Field(description='Connector.id of the Connector of this Location where the charging session is/was happening.', max_length=36)
-    meter_id: str | None = Field(None, description='Optional identification of the kWh meter.', max_length=255)
-    currency: str = Field(description='ISO 4217 code of the currency used for this session.', max_length=3)
-    charging_periods: Annotated[list[OcpiChargingPeriod], Field(description='An optional list of Charging Periods that can be used to calculate and verify the total cost.')] = []
-    total_cost: OcpiPrice | None = Field(None, description='The total cost of the session in the specified currency.')
+        ''',
+    )] = None
     status: OcpiSessionStatusEnum = Field(description='The status of the session.')
     last_updated: AwareDatetime = Field(description='Timestamp when this Session was last updated (or created).')
 

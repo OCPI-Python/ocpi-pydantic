@@ -208,18 +208,24 @@ class OcpiLocation(BaseModel):
     country_code: str = Field(description="ISO-3166 alpha-2 country code of the CPO that 'owns' this Location.", min_length=2, max_length=2)
     party_id: str = Field(description="ID of the CPO that 'owns' this Location (following the ISO-15118 standard).", min_length=3, max_length=3)
     id: str = Field(description='Uniquely identifies the location within the CPOs platform (and suboperator platforms).', max_length=36)
-    name: str | None = Field(None, description='Display name of the location.')
+    name: Annotated[str | None, Field(description='Display name of the location.')] = None
 
     publish: bool = Field(description='Defines if a Location may be published on an website or app etc.')
     publish_allowed_to: list[OcpiPublishTokenType] = Field([], description='This field may only be used when the publish field is set to false.')
 
     time_zone: str = Field(description='One of IANA tzdata’s TZ-values representing the time zone of the location.')
     coordinates: OcpiGeoLocation = Field(description='Coordinates of the location.')
-    postal_code: str | None = Field(None, description='Postal code of the location, may only be omitted when the location has no postal code.', max_length=10)
-    country: str = Field(description='ISO 3166-1 alpha-3 code for the country of this location.', max_length=3)
-    state: str | None = Field(None, description='State or province of the location, only to be used when relevant.', max_length=20)
-    city: str = Field(description='City or town.', max_length=45)
-    address: str = Field(description='Street/block name and house number if available.', max_length=45)
+    postal_code: Annotated[str | None, Field(
+        max_length=10,
+        description='''
+        Postal code of the location, may only be omitted when the location has no postal
+        code.
+        ''',
+    )] = None
+    country: str = Field(max_length=3, description='ISO 3166-1 alpha-3 code for the country of this location.')
+    state: Annotated[str | None, Field(max_length=20, description='State or province of the location, only to be used when relevant.')] = None
+    city: str = Field(max_length=45, description='City or town.')
+    address: str = Field(max_length=45, description='Street/block name and house number if available.')
     opening_times: OcpiHours | None = Field(None, description='The times when the EVSEs at the location can be accessed for charging.')
     charging_when_closed: Annotated[bool | None, Field(description='Indicates if the EVSEs are still charging outside the opening hours of the location. Default: true')] = True
 

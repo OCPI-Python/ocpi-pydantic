@@ -14,9 +14,6 @@ class OcpiConnector(BaseModel):
     A _Connector_ is the _socket_ or _cable and plug_ available for the EV to use. A single EVSE may provide multiple Connectors but only
     one of them can be in use at the same time. A Connector always belongs to an EVSE object.
 
-    - `id`:  
-        Identifier of the Connector within the EVSE. Two Connectors may have
-        the same id as long as they do not belong to the same _EVSE_ object.
     - `max_voltage`:
         Maximum voltage of the connector (line to neutral for AC_3_PHASE), in
         volt [V]. For example: DC Chargers might vary the voltage during
@@ -44,7 +41,13 @@ class OcpiConnector(BaseModel):
         For a "free of charge" tariff, this field should be set and point to a
         defined "free of charge" tariff.
     '''
-    id: str = Field(description='Identifier of the Connector within the EVSE.', max_length=36)
+    id: str = Field(
+        max_length=36,
+        description='''
+        Identifier of the Connector within the EVSE. Two Connectors may have
+        the same id as long as they do not belong to the same _EVSE_ object.
+        ''',
+    )
     standard: OcpiConnectorTypeEnum = Field(description='The standard of the installed connector.')
     format: OcpiConnectorFormatEnum = Field(description='The format (socket/cable) of the installed connector.')
     power_type: OcpiPowerTypeEnum
