@@ -8,9 +8,14 @@ from ocpi_pydantic.v221.enum import OcpiInterfaceRoleEnum, OcpiModuleIdEnum, Ocp
 
 
 class OcpiEndpoint(BaseModel):
+    '''
+    OCPI 6.2.2. Endpoint class
+
+    NOTE: for the `credentials` module, the role is not relevant as this module is the same for all roles.
+    '''
     identifier: OcpiModuleIdEnum = Field(description='Endpoint identifier.')
     role: OcpiInterfaceRoleEnum = Field(description='Interface role this endpoint implements.')
-    url: str = Field(description='URL to the endpoint.')
+    url: HttpUrl = Field(description='URL to the endpoint.')
 
     _examples: ClassVar[list[dict]] = [
         {
