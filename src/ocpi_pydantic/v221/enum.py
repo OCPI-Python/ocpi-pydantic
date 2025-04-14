@@ -377,7 +377,7 @@ class OcpiAuthMethodEnum(str, Enum):
 
 
 
-class OcpiCrdDeminsionTypeEnum(str, Enum):
+class OcpiCdrDimensionTypeEnum(str, Enum):
     '''
     OCPI 10.4.3. CdrDimensionType enum
 

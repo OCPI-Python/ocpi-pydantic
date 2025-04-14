@@ -3,7 +3,7 @@ from typing import Annotated, ClassVar
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
 from ocpi_pydantic.v221.base import OcpiPrice
-from ocpi_pydantic.v221.enum import OcpiAuthMethodEnum, OcpiConnectorFormatEnum, OcpiConnectorTypeEnum, OcpiCrdDeminsionTypeEnum, OcpiPowerTypeEnum, OcpiTokenTypeEnum
+from ocpi_pydantic.v221.enum import OcpiAuthMethodEnum, OcpiConnectorFormatEnum, OcpiConnectorTypeEnum, OcpiCdrDimensionTypeEnum, OcpiPowerTypeEnum, OcpiTokenTypeEnum
 from ocpi_pydantic.v221.locations import OcpiGeoLocation
 from ocpi_pydantic.v221.tariffs import OcpiTariff
 
@@ -45,7 +45,7 @@ class OcpiCdrDimension(BaseModel):
     '''
     OCPI 10.4.2. CdrDimension class
     '''
-    type: OcpiCrdDeminsionTypeEnum = Field(description='Type of CDR dimension.')
+    type: OcpiCdrDimensionTypeEnum = Field(description='Type of CDR dimension.')
     volume: float = Field(description='Volume of the dimension consumed, measured according to the dimension type.')
 
 
