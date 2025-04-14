@@ -333,8 +333,8 @@ class OcpiChargingPreferencesResponseEnum(str, Enum):
     the OCPI response object.
     '''
     ACCEPTED = 'ACCEPTED' # Charging Preferences accepted, EVSE will try to accomplish them, although this is no guarantee that they will be fulfilled.
-    DEPARTURE_REQUIRED = 'DEPARTURE_REQUIRED' # CPO requires `departure_time`` to be able to perform Charging Preference based Smart Charging.
-    ENERGY_NEED_REQUIRED = 'ENERGY_NEED_REQUIRED' # CPO requires `energy_need`` to be able to perform Charging Preference based Smart Charging.
+    DEPARTURE_REQUIRED = 'DEPARTURE_REQUIRED' # CPO requires `departure_time` to be able to perform Charging Preference based Smart Charging.
+    ENERGY_NEED_REQUIRED = 'ENERGY_NEED_REQUIRED' # CPO requires `energy_need` to be able to perform Charging Preference based Smart Charging.
     NOT_POSSIBLE = 'NOT_POSSIBLE' # Charging Preferences contain a demand that the EVSE knows it cannot fulfill.
     PROFILE_TYPE_NOT_SUPPORTED = 'PROFILE_TYPE_NOT_SUPPORTED' # `profile_type` contains a value that is not supported by the EVSE.
 
