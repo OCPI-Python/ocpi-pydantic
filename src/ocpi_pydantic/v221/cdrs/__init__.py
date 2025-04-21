@@ -2,7 +2,7 @@ from typing import Annotated, ClassVar
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field
 
-from ocpi_pydantic.v221.base import OcpiPrice
+from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiPrice
 from ocpi_pydantic.v221.enum import OcpiAuthMethodEnum, OcpiConnectorFormatEnum, OcpiConnectorTypeEnum, OcpiCdrDimensionTypeEnum, OcpiPowerTypeEnum, OcpiTokenTypeEnum
 from ocpi_pydantic.v221.locations import OcpiGeoLocation
 from ocpi_pydantic.v221.tariffs import OcpiTariff
@@ -532,3 +532,13 @@ class OcpiCdr(BaseModel):
         "last_updated": "2015-06-29T22:01:13Z"
     }
     model_config = ConfigDict(json_schema_extra={'examples': [_example]})
+
+
+
+class OcpiCdrListResponse(OcpiBaseResponse):
+    data: list[OcpiCdr] = ...
+
+    _examples: ClassVar[dict] = [{
+        'data': [OcpiCdr._example], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})

@@ -72,7 +72,7 @@ class OcpiVersionDetail(BaseModel):
 
 
 class OcpiVersionsResponse(OcpiBaseResponse):
-    data: list[OcpiVersion] = ...
+    data: list[OcpiVersion] = []
 
     _examples: ClassVar[dict] = [{ # Version information response (list of objects)
         'data': [OcpiVersion._example], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
