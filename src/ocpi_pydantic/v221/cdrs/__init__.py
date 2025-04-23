@@ -392,7 +392,7 @@ class OcpiCdr(BaseModel):
         of Charge_ Tariff.
         ''',
     )] = []
-    charging_periods: OcpiChargingPeriod = Field(
+    charging_periods: list[OcpiChargingPeriod] = Field(
         description='''
         List of Charging Periods that make up this charging session. A
         session consists of 1 or more periods, where each period has a
