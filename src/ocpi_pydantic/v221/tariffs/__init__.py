@@ -181,6 +181,29 @@ class OcpiTariffElement(BaseModel):
 class OcpiTariff(BaseModel):
     '''
     OCPI 11.3.1. Tariff Object
+
+    A Tariff object consists of a list of one or more Tariff Elements, which can be used to create complex Tariff structures.
+
+    When the list of Tariff Elements contains more than one Element with the same Tariff Dimension (ENERGY/FLAT/TIME etc.), than
+    the first Tariff Element with that Dimension in the list with matching Tariff Restrictions will be used. Only one Tariff per Element type
+    can be active at any point in time, but multiple Tariff Types can be active at once. IE you can have an ENERGY element and TIME
+    element active at the same time, but only the first valid element of each.
+
+    When no Tariff Element with a specific Dimension is found for which the Restrictions match, and there is no Tariff Element in the list
+    with the given Dimension without Restrictions, there will be no costs for that Tariff Dimension.
+
+    It is advised to always add a "default" Tariff Element per Dimension (ENERGY/FLAT/TIME etc.). This can be achieved by adding a
+    Tariff Element without Restrictions after all other occurrences of the same Dimension in the list of Tariff Elements (the order is
+    important). Such a Tariff Element will act as fallback when no other Tariff Element of a specific Dimension matches the relevant
+    parameters (Restrictions).
+
+    To define a "Free of Charge" tariff in OCPI, a Tariff with `type = FLAT` and `price = 0.00` has to be provided. See: Free of Charge
+    Tariff example
+
+    NOTE: `min_price`: As the VAT might be built up of different parts, there might be situations where minimum cost
+    including VAT is reached earlier or later than the minimum cost excluding VAT. So as a rule, they both apply: -
+    The total cost of a Charging Session excluding VAT can never be lower than the `min_price` excluding VAT. -
+    The total cost of a Charging Session including VAT can never be lower than the `min_price` including VAT.
     '''
     country_code: str = Field(min_length=2, max_length=2, description="""ISO-3166 alpha-2 country code of the CPO that 'owns' this Tariff.""")
     party_id: str = Field(
