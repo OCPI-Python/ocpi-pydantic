@@ -151,7 +151,7 @@ class OcpiTariffRestrictions(BaseModel):
         no longer be active when the charging power drops below the defined value.
         ''',
     )] = None
-    min_power: Annotated[float | None, Field(
+    max_power: Annotated[float | None, Field(
         description='''
         Maximum power in kW, for example 20. When the EV is charging with less than
         the defined amount of power, this TariffElement becomes/is active. If the
