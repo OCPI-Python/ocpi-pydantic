@@ -359,6 +359,13 @@ class OcpiTariff(BaseModel):
         if start_date_time and value:
             if start_date_time > value: raise ValueError('end_date_time must be after start_date_time')
         return value
+    
+
+    @field_validator('tariff_alt_url', mode='before')
+    @classmethod
+    def validate_tariff_alt_url(cls, value: str | None, info: ValidationInfo):
+        if not value: return None
+        else: return value
 
 
     _examples: ClassVar[list[dict]] = [
