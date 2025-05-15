@@ -1,7 +1,8 @@
+import datetime
 from decimal import Decimal
 from typing import Annotated, ClassVar
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, HttpUrl
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, HttpUrl, ValidationInfo, field_validator
 
 from ocpi_pydantic.v221.base import OcpiDisplayText, OcpiPrice
 from ocpi_pydantic.v221.enum import OcpiDayOfWeekEnum, OcpiReservationRestrictionTypeEnum, OcpiTariffDimensionTypeEnum, OcpiTariffTypeEnum
@@ -190,6 +191,48 @@ class OcpiTariffRestrictions(BaseModel):
     )] = None
 
 
+    @field_validator('end_date', mode='after')
+    @classmethod
+    def validate_end_date(cls, value: str | None, info: ValidationInfo):
+        start_date: str | None = info.data.get('start_date')
+        if start_date and value:
+            s_date = datetime.date(*map(int, start_date.split('-')))
+            e_date = datetime.date(*map(int, value.split('-')))
+            if s_date > e_date: raise ValueError('end_date must be after start_date')
+        return value
+
+    @field_validator('max_kwh', mode='after')
+    @classmethod
+    def validate_max_kwh(cls, value: float | None, info: ValidationInfo):
+        min_kwh: float | None = info.data.get('min_kwh')
+        if min_kwh and value:
+            if min_kwh > value: raise ValueError('end_date must be after start_date')
+        return value
+
+    @field_validator('max_current', mode='after')
+    @classmethod
+    def validate_max_current(cls, value: float | None, info: ValidationInfo):
+        min_current: float | None = info.data.get('min_kwh')
+        if min_current and value:
+            if min_current > value: raise ValueError('end_date must be after start_date')
+        return value
+
+    @field_validator('max_power', mode='after')
+    @classmethod
+    def validate_max_power(cls, value: float | None, info: ValidationInfo):
+        min_power: float | None = info.data.get('min_kwh')
+        if min_power and value:
+            if min_power > value: raise ValueError('end_date must be after start_date')
+        return value
+
+    @field_validator('max_duration', mode='after')
+    @classmethod
+    def validate_max_duration(cls, value: int | None, info: ValidationInfo):
+        min_duration: int | None = info.data.get('min_kwh')
+        if min_duration and value:
+            if min_duration > value: raise ValueError('end_date must be after start_date')
+        return value
+
 
 
 class OcpiTariffElement(BaseModel):
@@ -307,6 +350,15 @@ class OcpiTariff(BaseModel):
     )] = None
     energy_mix: Annotated[OcpiEnergyMix | None, Field(description='Details on the energy supplied with this tariff.')] = None
     last_updated: AwareDatetime = Field(description='Timestamp when this Tariff was last updated (or created).')
+
+
+    @field_validator('end_date_time', mode='after')
+    @classmethod
+    def validate_end_date_time(cls, value: AwareDatetime | None, info: ValidationInfo):
+        start_date_time: AwareDatetime | None = info.data.get('start_date_time')
+        if start_date_time and value:
+            if start_date_time > value: raise ValueError('end_date_time must be after start_date_time')
+        return value
 
 
     _examples: ClassVar[list[dict]] = [

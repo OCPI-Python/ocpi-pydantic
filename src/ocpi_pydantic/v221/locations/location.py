@@ -1,7 +1,7 @@
 from datetime import datetime, timezone
 from typing import Annotated, ClassVar
 
-from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, field_validator, model_validator
+from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, ValidationInfo, field_validator, model_validator
 
 from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText
 from ocpi_pydantic.v221.enum import OcpiEnergySourceCategoryEnum, OcpiEnvironmentalImpactCategoryEnum, OcpiFacilityEnum, OcpiParkingTypeEnum, OcpiTokenTypeEnum
@@ -68,7 +68,7 @@ class OcpiExceptionalPeriod(BaseModel):
 
     @field_validator('period_begin', 'period_end', mode='before')
     @classmethod
-    def validate_datetime(cls, value: str | datetime):
+    def validate_datetime(cls, value: str | datetime, info: ValidationInfo):
         match type(value).__name__:
             case 'datetime': dt = value
             case 'str':
