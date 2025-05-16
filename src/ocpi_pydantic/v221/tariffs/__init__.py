@@ -4,7 +4,7 @@ from typing import Annotated, ClassVar
 
 from pydantic import AwareDatetime, BaseModel, ConfigDict, Field, HttpUrl, ValidationInfo, field_validator
 
-from ocpi_pydantic.v221.base import OcpiDisplayText, OcpiPrice
+from ocpi_pydantic.v221.base import OcpiBaseResponse, OcpiDisplayText, OcpiPrice
 from ocpi_pydantic.v221.enum import OcpiDayOfWeekEnum, OcpiReservationRestrictionTypeEnum, OcpiTariffDimensionTypeEnum, OcpiTariffTypeEnum
 from ocpi_pydantic.v221.locations.location import OcpiEnergyMix
 
@@ -712,4 +712,14 @@ class OcpiTariff(BaseModel):
             "last_updated": "2018-12-05T13:12:44Z"
         }
     ]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
+class OcpiTariffListResponse(OcpiBaseResponse):
+    data: list[OcpiTariff] = []
+
+    _examples: ClassVar[dict] = [{
+        'data': [OcpiTariff._examples[0]], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
     model_config = ConfigDict(json_schema_extra={'examples': _examples})
