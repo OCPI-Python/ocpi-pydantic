@@ -367,6 +367,13 @@ class OcpiTariff(BaseModel):
         if not value: return None
         else: return value
 
+    
+    @field_validator('type', mode='before')
+    @classmethod
+    def validate_type(cls, value: str | None, info: ValidationInfo):
+        if not value: return None
+        else: return value
+
 
     _examples: ClassVar[list[dict]] = [
         # OCPI 11.3.1.1. Examples
