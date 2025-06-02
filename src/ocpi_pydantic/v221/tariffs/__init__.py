@@ -206,7 +206,7 @@ class OcpiTariffRestrictions(BaseModel):
     def validate_max_kwh(cls, value: float | None, info: ValidationInfo):
         min_kwh: float | None = info.data.get('min_kwh')
         if min_kwh and value:
-            if min_kwh > value: raise ValueError('end_date must be after start_date')
+            if min_kwh > value: raise ValueError('max_kwh must be larger than min_kwh')
         return value
 
     @field_validator('max_current', mode='after')
@@ -214,7 +214,7 @@ class OcpiTariffRestrictions(BaseModel):
     def validate_max_current(cls, value: float | None, info: ValidationInfo):
         min_current: float | None = info.data.get('min_kwh')
         if min_current and value:
-            if min_current > value: raise ValueError('end_date must be after start_date')
+            if min_current > value: raise ValueError('max_current must be larger than min_current')
         return value
 
     @field_validator('max_power', mode='after')
@@ -222,7 +222,7 @@ class OcpiTariffRestrictions(BaseModel):
     def validate_max_power(cls, value: float | None, info: ValidationInfo):
         min_power: float | None = info.data.get('min_kwh')
         if min_power and value:
-            if min_power > value: raise ValueError('end_date must be after start_date')
+            if min_power > value: raise ValueError('max_power must be larger than min_power')
         return value
 
     @field_validator('max_duration', mode='after')
@@ -230,7 +230,7 @@ class OcpiTariffRestrictions(BaseModel):
     def validate_max_duration(cls, value: int | None, info: ValidationInfo):
         min_duration: int | None = info.data.get('min_kwh')
         if min_duration and value:
-            if min_duration > value: raise ValueError('end_date must be after start_date')
+            if min_duration > value: raise ValueError('max_duration must be larger than min_duration')
         return value
 
 
