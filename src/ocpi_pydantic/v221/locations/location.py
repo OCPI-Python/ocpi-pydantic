@@ -119,7 +119,7 @@ class OcpiHours(BaseModel):
 
 
 class AdditionalGeoLocation(BaseModel):
-    '''
+    r'''
     OCPI 8.4.1. AdditionalGeoLoation class
 
     This class defines an additional geo location that is relevant for the Charge Point. The geodetic system to be used is WGS 84.
