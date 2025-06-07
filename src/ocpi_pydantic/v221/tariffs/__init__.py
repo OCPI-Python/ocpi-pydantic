@@ -375,6 +375,16 @@ class OcpiTariff(BaseModel):
         else: return value
 
 
+    @field_validator('max_price', mode='after')
+    @classmethod
+    def validate_max_price(cls, value: OcpiPrice | None, info: ValidationInfo):
+        if not value: return value
+        min_price: OcpiPrice | None = info.data.get('min_price')
+        if not min_price: return value
+        if value.excl_vat < min_price.excl_vat: raise ValueError('max_price should larger than min_price')
+        if value.incl_vat < min_price.incl_vat: raise ValueError('max_price should larger than min_price')
+
+
     _examples: ClassVar[list[dict]] = [
         # OCPI 11.3.1.1. Examples
         { # Simple Tariff example 0.25 euro per kWh
