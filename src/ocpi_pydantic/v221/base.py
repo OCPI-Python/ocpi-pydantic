@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 from typing import Annotated, ClassVar, Generic, TypeVar
 
-from pydantic import BaseModel, ConfigDict, Field
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, field_validator
 
 from ocpi_pydantic.v221.enum import OcpiStatusCodeEnum
 
@@ -26,6 +26,17 @@ class OcpiPrice(BaseModel):
     '''
     excl_vat: Decimal = Field(allow_inf_nan=True, description='Price/Cost excluding VAT.')
     incl_vat: Annotated[Decimal | None, Field(allow_inf_nan=True, description='Price/Cost including VAT.')] = None
+
+    @field_validator('excl_vat', mode='after')
+    @classmethod
+    def validate_excl_vat(cls, value: Decimal, info: ValidationInfo):
+        return value.quantize(Decimal('0.001', ROUND_HALF_UP))
+    
+    @field_validator('incl_vat', mode='after')
+    @classmethod
+    def validate_incl_vat(cls, value: Decimal | None, info: ValidationInfo):
+        if value == None: return None
+        else: return value.quantize(Decimal('0.001', ROUND_HALF_UP))
 
 
 
