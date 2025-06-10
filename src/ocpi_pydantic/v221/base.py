@@ -24,8 +24,8 @@ class OcpiPrice(BaseModel):
     '''
     OCPI 16.5. Price class
     '''
-    excl_vat: Decimal = Field(description='Price/Cost excluding VAT.')
-    incl_vat: Annotated[Decimal | None, Field(description='Price/Cost including VAT.')] = None
+    excl_vat: Decimal = Field(allow_inf_nan=True, description='Price/Cost excluding VAT.')
+    incl_vat: Annotated[Decimal | None, Field(allow_inf_nan=True, description='Price/Cost including VAT.')] = None
 
 
 

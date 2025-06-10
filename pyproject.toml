@@ -1,6 +1,6 @@
 [project]
 name = "ocpi-pydantic"
-version = "0.7.15"
+version = "0.7.16"
 description = "OCPI Pydantic models"
 authors = [{ name = "Leon", email = "leon0824@gmail.com" }]
 dependencies = ["pydantic>=2.1,<3"]
