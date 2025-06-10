@@ -31,14 +31,14 @@ class OcpiPrice(BaseModel):
     @classmethod
     def validate_excl_vat(cls, value: Decimal, info: ValidationInfo):
         if value == Decimal('Infinity'): return value
-        return value.quantize(Decimal('0.00001'), ROUND_HALF_UP)
+        return value.quantize(Decimal('0.000001'), ROUND_HALF_UP)
     
     @field_validator('incl_vat', mode='after')
     @classmethod
     def validate_incl_vat(cls, value: Decimal | None, info: ValidationInfo):
         if value == None: return None
         if value == Decimal('Infinity'): return value
-        return value.quantize(Decimal('0.00001'), ROUND_HALF_UP)
+        return value.quantize(Decimal('0.000001'), ROUND_HALF_UP)
 
 
 
