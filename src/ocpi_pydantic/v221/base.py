@@ -30,13 +30,13 @@ class OcpiPrice(BaseModel):
     @field_validator('excl_vat', mode='after')
     @classmethod
     def validate_excl_vat(cls, value: Decimal, info: ValidationInfo):
-        return value.quantize(Decimal('0.001', ROUND_HALF_UP))
+        return value.quantize(Decimal('0.001'), ROUND_HALF_UP)
     
     @field_validator('incl_vat', mode='after')
     @classmethod
     def validate_incl_vat(cls, value: Decimal | None, info: ValidationInfo):
         if value == None: return None
-        else: return value.quantize(Decimal('0.001', ROUND_HALF_UP))
+        else: return value.quantize(Decimal('0.001'), ROUND_HALF_UP)
 
 
 
