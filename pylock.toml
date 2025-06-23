@@ -17,6 +17,11 @@ wheels = [
 ]
 marker = "\"default\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "typing-extensions>=4.0.0; python_version < \"3.9\"",
+]
+
 [[packages]]
 name = "appnope"
 version = "0.1.4"
@@ -27,6 +32,9 @@ wheels = [
 ]
 marker = "platform_system == \"Darwin\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "asttokens"
 version = "3.0.0"
@@ -36,6 +44,9 @@ wheels = [
     {name = "asttokens-3.0.0-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/25/8a/c46dcc25341b5bce5472c718902eb3d38600a903b14fa6aeecef3f21a46f/asttokens-3.0.0-py3-none-any.whl",hashes = {sha256 = "e3078351a059199dd5138cb1c706e6430c05eff2ff136af5eb4790f9d28932e2"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "cffi"
@@ -104,6 +115,11 @@ wheels = [
 ]
 marker = "implementation_name == \"pypy\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "pycparser",
+]
+
 [[packages]]
 name = "colorama"
 version = "0.4.6"
@@ -114,6 +130,9 @@ wheels = [
 ]
 marker = "sys_platform == \"win32\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "comm"
 version = "0.2.2"
@@ -123,6 +142,11 @@ wheels = [
     {name = "comm-0.2.2-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/e6/75/49e5bfe642f71f272236b5b2d2691cf915a7283cc0ceda56357b61daa538/comm-0.2.2-py3-none-any.whl",hashes = {sha256 = "e6fb86cb70ff661ee8c9c14e7d36d6de3b4066f1441be4063df9c5009f0a64d3"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "traitlets>=4",
+]
 
 [[packages]]
 name = "coverage"
@@ -195,6 +219,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "debugpy"
 version = "1.8.12"
@@ -225,6 +252,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "decorator"
 version = "5.1.1"
@@ -234,6 +264,9 @@ wheels = [
     {name = "decorator-5.1.1-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/d5/50/83c593b07763e1161326b3b8c6686f0f4b0f24d5526546bee538c89837d6/decorator-5.1.1-py3-none-any.whl",hashes = {sha256 = "b8c3f85900b9dc423225913c5aace94729fe1fa9763b38939a95226f02d37186"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "exceptiongroup"
@@ -245,6 +278,9 @@ wheels = [
 ]
 marker = "python_version < \"3.11\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "executing"
 version = "2.2.0"
@@ -254,6 +290,9 @@ wheels = [
     {name = "executing-2.2.0-py2.py3-none-any.whl",url = "https://files.pythonhosted.org/packages/7b/8f/c4d9bafc34ad7ad5d8dc16dd1347ee0e507a52c3adb6bfa8887e1c6a26ba/executing-2.2.0-py2.py3-none-any.whl",hashes = {sha256 = "11387150cad388d62750327a53d3339fad4888b39a6fe233c3afbb54ecffd3aa"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "importlib-metadata"
@@ -265,6 +304,12 @@ wheels = [
 ]
 marker = "python_version < \"3.10\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "typing-extensions>=3.6.4; python_version < \"3.8\"",
+    "zipp>=3.20",
+]
+
 [[packages]]
 name = "iniconfig"
 version = "2.0.0"
@@ -274,6 +319,9 @@ wheels = [
     {name = "iniconfig-2.0.0-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/ef/a6/62565a6e1cf69e10f5727360368e451d4b7f58beeac6173dc9db836a5b46/iniconfig-2.0.0-py3-none-any.whl",hashes = {sha256 = "b6a85871a79d2e3b22d2d1b94ac2824226a63c6b741c88f7ae975f18b6778374"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "ipykernel"
@@ -285,6 +333,23 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "appnope; platform_system == \"Darwin\"",
+    "comm>=0.1.1",
+    "debugpy>=1.6.5",
+    "ipython>=7.23.1",
+    "jupyter-client>=6.1.12",
+    "jupyter-core!=5.0.*,>=4.12",
+    "matplotlib-inline>=0.1",
+    "nest-asyncio",
+    "packaging",
+    "psutil",
+    "pyzmq>=24",
+    "tornado>=6.1",
+    "traitlets>=5.4.0",
+]
+
 [[packages]]
 name = "ipython"
 version = "8.18.1"
@@ -294,6 +359,21 @@ wheels = [
     {name = "ipython-8.18.1-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/47/6b/d9fdcdef2eb6a23f391251fde8781c38d42acd82abe84d054cb74f7863b0/ipython-8.18.1-py3-none-any.whl",hashes = {sha256 = "e8267419d72d81955ec1177f8a29aaa90ac80ad647499201119e2f05e99aa397"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "colorama; sys_platform == \"win32\"",
+    "decorator",
+    "exceptiongroup; python_version < \"3.11\"",
+    "jedi>=0.16",
+    "matplotlib-inline",
+    "pexpect>4.3; sys_platform != \"win32\"",
+    "prompt-toolkit<3.1.0,>=3.0.41",
+    "pygments>=2.4.0",
+    "stack-data",
+    "traitlets>=5",
+    "typing-extensions; python_version < \"3.10\"",
+]
 
 [[packages]]
 name = "jedi"
@@ -305,6 +385,11 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "parso<0.9.0,>=0.8.4",
+]
+
 [[packages]]
 name = "jupyter-client"
 version = "8.6.3"
@@ -314,6 +399,16 @@ wheels = [
     {name = "jupyter_client-8.6.3-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/11/85/b0394e0b6fcccd2c1eeefc230978a6f8cb0c5df1e4cd3e7625735a0d7d1e/jupyter_client-8.6.3-py3-none-any.whl",hashes = {sha256 = "e8a19cc986cc45905ac3362915f410f3af85424b4c0905e94fa5f2cb08e8f23f"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "importlib-metadata>=4.8.3; python_version < \"3.10\"",
+    "jupyter-core!=5.0.*,>=4.12",
+    "python-dateutil>=2.8.2",
+    "pyzmq>=23.0",
+    "tornado>=6.2",
+    "traitlets>=5.3",
+]
 
 [[packages]]
 name = "jupyter-core"
@@ -325,6 +420,13 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "platformdirs>=2.5",
+    "pywin32>=300; sys_platform == \"win32\" and platform_python_implementation != \"PyPy\"",
+    "traitlets>=5.3",
+]
+
 [[packages]]
 name = "loguru"
 version = "0.7.3"
@@ -334,6 +436,13 @@ wheels = [
     {name = "loguru-0.7.3-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/0c/29/0348de65b8cc732daa3e33e67806420b2ae89bdce2b04af740289c5c6c8c/loguru-0.7.3-py3-none-any.whl",hashes = {sha256 = "31a33c10c8e1e10422bfd431aeb5d351c7cf7fa671e3c4df004162264b28220c"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "aiocontextvars>=0.2.0; python_version < \"3.7\"",
+    "colorama>=0.3.4; sys_platform == \"win32\"",
+    "win32-setctime>=1.0.0; sys_platform == \"win32\"",
+]
 
 [[packages]]
 name = "matplotlib-inline"
@@ -345,6 +454,11 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "traitlets",
+]
+
 [[packages]]
 name = "mimesis"
 version = "12.1.0"
@@ -354,6 +468,9 @@ wheels = [
     {name = "mimesis-12.1.0-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/68/7f/9d8146bbbec124c17a1b3fc9d879b53c87d072274c20a3049d58bda5506b/mimesis-12.1.0-py3-none-any.whl",hashes = {sha256 = "58bf5e2cb68431009e47efde76364ab8305b4e834385d93a5ba49f894f03f6fe"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "nest-asyncio"
@@ -365,6 +482,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "packaging"
 version = "24.2"
@@ -374,6 +494,9 @@ wheels = [
     {name = "packaging-24.2-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/88/ef/eb23f262cca3c0c4eb7ab1933c3b1f03d021f2c48f54763065b6f0e321be/packaging-24.2-py3-none-any.whl",hashes = {sha256 = "09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "parso"
@@ -385,6 +508,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "pdm-backend"
 version = "2.4.4"
@@ -395,6 +521,11 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "importlib-metadata>=3.6; python_version < \"3.10\"",
+]
+
 [[packages]]
 name = "pexpect"
 version = "4.9.0"
@@ -403,6 +534,11 @@ wheels = [
     {name = "pexpect-4.9.0-py2.py3-none-any.whl",url = "https://files.pythonhosted.org/packages/9e/c3/059298687310d527a58bb01f3b1965787ee3b40dce76752eda8b44e9a2c5/pexpect-4.9.0-py2.py3-none-any.whl",hashes = {sha256 = "7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523"}},
 ]
 marker = "sys_platform != \"win32\" and \"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "ptyprocess>=0.5",
+]
 
 [[packages]]
 name = "platformdirs"
@@ -414,6 +550,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "pluggy"
 version = "1.5.0"
@@ -424,6 +563,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "prompt-toolkit"
 version = "3.0.50"
@@ -433,6 +575,11 @@ wheels = [
     {name = "prompt_toolkit-3.0.50-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/e4/ea/d836f008d33151c7a1f62caf3d8dd782e4d15f6a43897f64480c2b8de2ad/prompt_toolkit-3.0.50-py3-none-any.whl",hashes = {sha256 = "9b6427eb19e479d98acff65196a307c555eb567989e6d88ebbb1b509d9779198"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "wcwidth",
+]
 
 [[packages]]
 name = "psutil"
@@ -450,6 +597,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "ptyprocess"
 version = "0.7.0"
@@ -459,6 +609,9 @@ wheels = [
 ]
 marker = "sys_platform != \"win32\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "pure-eval"
 version = "0.2.3"
@@ -467,6 +620,9 @@ wheels = [
     {name = "pure_eval-0.2.3-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/8e/37/efad0257dc6e593a18957422533ff0f87ede7c9c6ea010a2177d738fb82f/pure_eval-0.2.3-py3-none-any.whl",hashes = {sha256 = "1db8e35b67b3d218d818ae653e27f06c3aa420901fa7b081ca98cbedc874e0d0"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "pycparser"
@@ -478,15 +634,26 @@ wheels = [
 ]
 marker = "implementation_name == \"pypy\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "pydantic"
-version = "2.11.5"
+version = "2.11.7"
 requires-python = ">=3.9"
-sdist = {name = "pydantic-2.11.5.tar.gz", url = "https://files.pythonhosted.org/packages/f0/86/8ce9040065e8f924d642c58e4a344e33163a07f6b57f836d0d734e0ad3fb/pydantic-2.11.5.tar.gz", hashes = {sha256 = "7f853db3d0ce78ce8bbb148c401c2cdd6431b3473c0cdff2755c7690952a7b7a"}}
+sdist = {name = "pydantic-2.11.7.tar.gz", url = "https://files.pythonhosted.org/packages/00/dd/4325abf92c39ba8623b5af936ddb36ffcfe0beae70405d456ab1fb2f5b8c/pydantic-2.11.7.tar.gz", hashes = {sha256 = "d989c3c6cb79469287b1569f7447a17848c998458d49ebe294e975b9baf0f0db"}}
 wheels = [
-    {name = "pydantic-2.11.5-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/b5/69/831ed22b38ff9b4b64b66569f0e5b7b97cf3638346eb95a2147fdb49ad5f/pydantic-2.11.5-py3-none-any.whl",hashes = {sha256 = "f9c26ba06f9747749ca1e5c94d6a85cb84254577553c8785576fd38fa64dc0f7"}},
+    {name = "pydantic-2.11.7-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/6a/c0/ec2b1c8712ca690e5d61979dee872603e92b8a32f94cc1b72d53beab008a/pydantic-2.11.7-py3-none-any.whl",hashes = {sha256 = "dde5df002701f6de26248661f6835bbe296a47bf73990135c7d07ce741b9623b"}},
 ]
 marker = "\"default\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "annotated-types>=0.6.0",
+    "pydantic-core==2.33.2",
+    "typing-extensions>=4.12.2",
+    "typing-inspection>=0.4.0",
+]
 
 [[packages]]
 name = "pydantic-core"
@@ -595,6 +762,11 @@ wheels = [
 ]
 marker = "\"default\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "typing-extensions!=4.7.0,>=4.6.0",
+]
+
 [[packages]]
 name = "pygments"
 version = "2.19.1"
@@ -604,6 +776,9 @@ wheels = [
     {name = "pygments-2.19.1-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/8a/0b/9fcc47d19c48b59121088dd6da2488a49d5f72dacf8262e2790a1d2c7d15/pygments-2.19.1-py3-none-any.whl",hashes = {sha256 = "9ea1544ad55cecf4b8242fab6dd35a93bbce657034b0611ee383099054ab6d8c"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "pytest"
@@ -615,6 +790,16 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "colorama; sys_platform == \"win32\"",
+    "exceptiongroup>=1.0.0rc8; python_version < \"3.11\"",
+    "iniconfig",
+    "packaging",
+    "pluggy<2,>=1.5",
+    "tomli>=1; python_version < \"3.11\"",
+]
+
 [[packages]]
 name = "pytest-cov"
 version = "6.0.0"
@@ -625,6 +810,12 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "coverage[toml]>=7.5",
+    "pytest>=4.6",
+]
+
 [[packages]]
 name = "pytest-cover"
 version = "3.0.0"
@@ -633,6 +824,11 @@ wheels = [
     {name = "pytest_cover-3.0.0-py2.py3-none-any.whl",url = "https://files.pythonhosted.org/packages/71/9b/7b4700c462628e169bd859c6368d596a6aedc87936bde733bead9f875fce/pytest_cover-3.0.0-py2.py3-none-any.whl",hashes = {sha256 = "578249955eb3b5f3991209df6e532bb770b647743b7392d3d97698dc02f39ebb"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "pytest-cov>=2.0",
+]
 
 [[packages]]
 name = "pytest-coverage"
@@ -643,6 +839,11 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "pytest-cover",
+]
+
 [[packages]]
 name = "python-dateutil"
 version = "2.9.0.post0"
@@ -652,6 +853,11 @@ wheels = [
     {name = "python_dateutil-2.9.0.post0-py2.py3-none-any.whl",url = "https://files.pythonhosted.org/packages/ec/57/56b9bcc3c9c6a792fcbaf139543cee77261f3651ca9da0c93f5c1221264b/python_dateutil-2.9.0.post0-py2.py3-none-any.whl",hashes = {sha256 = "a8b2bc7bffae282281c8140a97d3aa9c14da0b136dfe83f850eea9a5f7470427"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "six>=1.5",
+]
 
 [[packages]]
 name = "pywin32"
@@ -673,6 +879,9 @@ wheels = [
     {name = "pywin32-308-cp39-cp39-win_amd64.whl",url = "https://files.pythonhosted.org/packages/e4/cd/0838c9a6063bff2e9bac2388ae36524c26c50288b5d7b6aebb6cdf8d375d/pywin32-308-cp39-cp39-win_amd64.whl",hashes = {sha256 = "71b3322d949b4cc20776436a9c9ba0eeedcbc9c650daa536df63f0ff111bb920"}},
 ]
 marker = "sys_platform == \"win32\" and platform_python_implementation != \"PyPy\" and \"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "pyzmq"
@@ -762,6 +971,11 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "cffi; implementation_name == \"pypy\"",
+]
+
 [[packages]]
 name = "six"
 version = "1.17.0"
@@ -772,6 +986,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "stack-data"
 version = "0.6.3"
@@ -780,6 +997,13 @@ wheels = [
     {name = "stack_data-0.6.3-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/f1/7b/ce1eafaf1a76852e2ec9b22edecf1daa58175c090266e9f6c64afcd81d91/stack_data-0.6.3-py3-none-any.whl",hashes = {sha256 = "d5558e0c25a4cb0853cddad3d77da9891a08cb85dd9f9f91b9f8cd66e511e695"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "asttokens>=2.1.0",
+    "executing>=1.2.0",
+    "pure-eval",
+]
 
 [[packages]]
 name = "tomli"
@@ -821,6 +1045,9 @@ wheels = [
 ]
 marker = "python_version < \"3.11\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "tornado"
 version = "6.4.2"
@@ -840,6 +1067,9 @@ wheels = [
 ]
 marker = "\"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "traitlets"
 version = "5.14.3"
@@ -849,6 +1079,9 @@ wheels = [
     {name = "traitlets-5.14.3-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/00/c0/8f5d070730d7836adc9c9b6408dec68c6ced86b304a9b26a14df072a6e8c/traitlets-5.14.3-py3-none-any.whl",hashes = {sha256 = "b74e89e397b1ed28cc831db7aea759ba6640cb3de13090ca145426688ff1ac4f"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = []
 
 [[packages]]
 name = "typing-extensions"
@@ -860,6 +1093,9 @@ wheels = [
 ]
 marker = "\"default\" in dependency_groups or \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "typing-inspection"
 version = "0.4.0"
@@ -870,6 +1106,11 @@ wheels = [
 ]
 marker = "\"default\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = [
+    "typing-extensions>=4.12.0",
+]
+
 [[packages]]
 name = "wcwidth"
 version = "0.2.13"
@@ -878,6 +1119,11 @@ wheels = [
     {name = "wcwidth-0.2.13-py2.py3-none-any.whl",url = "https://files.pythonhosted.org/packages/fd/84/fd2ba7aafacbad3c4201d395674fc6348826569da3c0937e75505ead3528/wcwidth-0.2.13-py2.py3-none-any.whl",hashes = {sha256 = "3da69048e4540d84af32131829ff948f1e022c1c6bdb8d6102117aac784f6859"}},
 ]
 marker = "\"dev\" in dependency_groups"
+
+[packages.tool.pdm]
+dependencies = [
+    "backports-functools-lru-cache>=1.2.1; python_version < \"3.2\"",
+]
 
 [[packages]]
 name = "win32-setctime"
@@ -889,6 +1135,9 @@ wheels = [
 ]
 marker = "sys_platform == \"win32\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [[packages]]
 name = "zipp"
 version = "3.21.0"
@@ -899,5 +1148,11 @@ wheels = [
 ]
 marker = "python_version < \"3.10\" and \"dev\" in dependency_groups"
 
+[packages.tool.pdm]
+dependencies = []
+
 [tool.pdm]
 hashes = {sha256 = "2e174bc49521c41462d79da15429b48591bb65e1eda25d12e94b2c12c73e97d0"}
+
+[[tool.pdm.targets]]
+requires_python = ">=3.9"

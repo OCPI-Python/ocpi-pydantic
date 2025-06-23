@@ -12,7 +12,7 @@ class OcpiDisplayText(BaseModel):
     '''
     OCPI 16.3. DisplayText class
     '''
-    language: str = Field(description='Language Code ISO 639-1.', max_length=2)
+    language: str = Field(description='Language Code ISO 639-1.', min_length=2, max_length=2)
     text: str = Field(description='Text to be displayed to a end user.', max_length=512)
 
     _example: ClassVar[dict] = {"language": "en", "text": "Standard Tariff"}
