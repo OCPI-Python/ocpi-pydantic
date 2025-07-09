@@ -31,7 +31,7 @@ class OcpiImage(BaseModel):
     height: int | None = Field(None, description='Height of the full scale image.', gt=0, le=99999)
 
     _example: ClassVar[dict] = {
-        'url': 'https://wincharge.com.tw/wp-content/uploads/2022/07/logo_wincharge_banner_blue.png',
+        'url': 'https://wnc.com.tw/wp-content/uploads/2022/07/logo_banner_blue.png',
         'category': 'OPERATOR',
         'type': 'png',
     }
@@ -48,8 +48,8 @@ class OcpiBusinessDetails(BaseModel):
     logo: OcpiImage | None = Field(None, description='Image link to the operator’s logo.')
 
     _example: ClassVar[dict] = {
-        'name': 'WinCharge',
-        'website': 'https://www.wincharge.com.tw',
+        'name': 'WNC',
+        'website': 'https://www.wnc.com.tw',
         # 'logo': OcpiImage._example,
     }
     model_config = ConfigDict(json_schema_extra={'examples': [_example]})

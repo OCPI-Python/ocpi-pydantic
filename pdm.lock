@@ -5,7 +5,7 @@
 groups = ["default", "dev"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:2e174bc49521c41462d79da15429b48591bb65e1eda25d12e94b2c12c73e97d0"
+content_hash = "sha256:9f3da7ab3623941d89ea161776a15061414c52413298856b69f644e89925b65e"
 
 [[metadata.targets]]
 requires_python = ">=3.9"
@@ -557,20 +557,6 @@ groups = ["dev"]
 files = [
     {file = "parso-0.8.4-py2.py3-none-any.whl", hash = "sha256:a418670a20291dacd2dddc80c377c5c3791378ee1e8d12bffc35420643d43f18"},
     {file = "parso-0.8.4.tar.gz", hash = "sha256:eb3a7b58240fb99099a345571deecc0f9540ea5f4dd2fe14c2a99d6b281ab92d"},
-]
-
-[[package]]
-name = "pdm-backend"
-version = "2.4.4"
-requires_python = ">=3.9"
-summary = "The build backend used by PDM that supports latest packaging standards"
-groups = ["dev"]
-dependencies = [
-    "importlib-metadata>=3.6; python_version < \"3.10\"",
-]
-files = [
-    {file = "pdm_backend-2.4.4-py3-none-any.whl", hash = "sha256:87f85f65c208956a8adbcc01b8878ab29a97d0494cde56b733d961d4b5a48acf"},
-    {file = "pdm_backend-2.4.4.tar.gz", hash = "sha256:f72551eeb319f74ca25856c24fb4026684eeb0dddd9df68482901ab0dc481258"},
 ]
 
 [[package]]

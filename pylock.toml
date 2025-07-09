@@ -512,21 +512,6 @@ marker = "\"dev\" in dependency_groups"
 dependencies = []
 
 [[packages]]
-name = "pdm-backend"
-version = "2.4.4"
-requires-python = ">=3.9"
-sdist = {name = "pdm_backend-2.4.4.tar.gz", url = "https://files.pythonhosted.org/packages/8d/fc/8efb0e9060167081bcbcddeb5d9e95cee6c762391c42b0c970373a7082ff/pdm_backend-2.4.4.tar.gz", hashes = {sha256 = "f72551eeb319f74ca25856c24fb4026684eeb0dddd9df68482901ab0dc481258"}}
-wheels = [
-    {name = "pdm_backend-2.4.4-py3-none-any.whl",url = "https://files.pythonhosted.org/packages/fd/21/29499bab4819aeeaccc5dbc2ae65653316fcfb30f53e24a686f6d4ab44dd/pdm_backend-2.4.4-py3-none-any.whl",hashes = {sha256 = "87f85f65c208956a8adbcc01b8878ab29a97d0494cde56b733d961d4b5a48acf"}},
-]
-marker = "\"dev\" in dependency_groups"
-
-[packages.tool.pdm]
-dependencies = [
-    "importlib-metadata>=3.6; python_version < \"3.10\"",
-]
-
-[[packages]]
 name = "pexpect"
 version = "4.9.0"
 sdist = {name = "pexpect-4.9.0.tar.gz", url = "https://files.pythonhosted.org/packages/42/92/cc564bf6381ff43ce1f4d06852fc19a2f11d180f23dc32d9588bee2f149d/pexpect-4.9.0.tar.gz", hashes = {sha256 = "ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f"}}
@@ -1152,7 +1137,7 @@ marker = "python_version < \"3.10\" and \"dev\" in dependency_groups"
 dependencies = []
 
 [tool.pdm]
-hashes = {sha256 = "2e174bc49521c41462d79da15429b48591bb65e1eda25d12e94b2c12c73e97d0"}
+hashes = {sha256 = "9f3da7ab3623941d89ea161776a15061414c52413298856b69f644e89925b65e"}
 
 [[tool.pdm.targets]]
 requires_python = ">=3.9"
