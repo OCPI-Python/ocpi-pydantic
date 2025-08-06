@@ -91,6 +91,8 @@ class OcpiPartyRoleEnum(str, Enum):
 class OcpiVersionNumberEnum(str, Enum):
     'List of known versions.'
     v221 = '2.2.1'
+    v220 = '2.2'
+    v211 = '2.1.1'
 
 
 
