@@ -136,6 +136,14 @@ class OcpiTokenResponse(OcpiBaseResponse):
 
 
 
+class OcpiTokenListResponse(OcpiBaseResponse):
+    data: list[OcpiToken] = ...
+
+    _examples: ClassVar[dict] = [{'data': [OcpiToken._examples[0]], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z'}]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
 class OcpiLocationReferences(BaseModel):
     '''
     OCPI 12.4.3. LocationReferences class
