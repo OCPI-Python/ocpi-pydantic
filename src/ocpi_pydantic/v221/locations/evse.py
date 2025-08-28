@@ -40,7 +40,7 @@ class OcpiEvse(BaseModel):
     coordinates: OcpiGeoLocation | None = Field(None, description='Coordinates of the EVSE.')
     physical_reference: str | None = Field(None, description='A number/string printed on the outside of the EVSE for visual identification.', max_length=16)
     directions: list[OcpiDisplayText] = Field([], description='Multi-language human-readable directions when more detailed information on how to reach the EVSE from the Location is required.')
-    parking_restrictions: list[OcpiParkingRestrictionEnum] = Field([], description='The restrictions that apply to the parking spot.')
+    parking_restrictions: list[OcpiParkingRestrictionEnum] | None = Field(None, description='The restrictions that apply to the parking spot.')
     images: list[OcpiImage] = Field([], description='Links to images related to the EVSE such as photos or logos.')
     last_updated: AwareDatetime = Field(description='Timestamp when this EVSE or one of its Connectors was last updated (or created).')
 
