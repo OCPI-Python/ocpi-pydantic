@@ -251,7 +251,7 @@ class OcpiLocation(BaseModel):
     operator: OcpiBusinessDetails | None = Field(None, description='Information of the operator.')
     suboperator: OcpiBusinessDetails | None = Field(None, description='Information of the suboperator if available.')
     owner: OcpiBusinessDetails | None = Field(None, description='Information of the owner if available.')
-    facilities: list[OcpiFacilityEnum] = Field([], description='Optional list of facilities this charging location directly belongs to.')
+    facilities: list[OcpiFacilityEnum] | None = Field(None, description='Optional list of facilities this charging location directly belongs to.')
     images: list[OcpiImage] = Field([], description='Links to images related to the location such as photos or logos.')
     energy_mix: Annotated[OcpiEnergyMix | None, Field(description='Details on the energy supplied at this location.')] = None
     last_updated: AwareDatetime = Field(description='Timestamp when this Location or one of its EVSEs or Connectors were last updated (or created).')
