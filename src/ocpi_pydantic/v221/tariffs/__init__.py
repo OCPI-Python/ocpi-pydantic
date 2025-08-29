@@ -733,6 +733,16 @@ class OcpiTariff(BaseModel):
 
 
 
+class OcpiTariffResponse(OcpiBaseResponse):
+    data: OcpiTariff = ...
+
+    _examples: ClassVar[dict] = [{
+        'data': OcpiTariff._examples[0], 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
 class OcpiTariffListResponse(OcpiBaseResponse):
     data: list[OcpiTariff] = []
 
