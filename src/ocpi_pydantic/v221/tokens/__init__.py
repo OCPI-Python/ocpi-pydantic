@@ -174,3 +174,22 @@ class OcpiAuthorizationInfo(BaseModel):
     location: Annotated[OcpiLocationReferences | None, Field(description='Optional reference to the location if it was included in the request, and if the EV driver is allowed to charge at that location.')] = None
     authorization_reference: Annotated[str | None, Field(description='Reference to the authorization given by the eMSP')] = None
     info: Annotated[OcpiDisplayText | None, Field(description='')] = None
+
+    _example: ClassVar[dict] = {
+        'allowed': OcpiAllowedTypeEnum.ALLOWED,
+        'token': OcpiToken._examples[0],
+        'location': None,
+        'authorization_reference': None,
+        'info': None,
+    }
+    model_config = ConfigDict(json_schema_extra={'examples': [_example]})
+
+
+
+class OcpiAuthorizationInfoResponse(OcpiBaseResponse):
+    data: OcpiAuthorizationInfo = ...
+
+    _examples: ClassVar[dict] = [{
+        'data': OcpiAuthorizationInfo._example, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
