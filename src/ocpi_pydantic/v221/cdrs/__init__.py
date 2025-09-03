@@ -535,6 +535,16 @@ class OcpiCdr(BaseModel):
 
 
 
+class OcpiCdrResponse(OcpiBaseResponse):
+    data: OcpiCdr = ...
+
+    _examples: ClassVar[dict] = [{
+        'data': OcpiCdr._example, 'status_code': 1000, 'timestamp': '2015-06-30T21:59:59Z',
+    }]
+    model_config = ConfigDict(json_schema_extra={'examples': _examples})
+
+
+
 class OcpiCdrListResponse(OcpiBaseResponse):
     data: list[OcpiCdr] = []
 
