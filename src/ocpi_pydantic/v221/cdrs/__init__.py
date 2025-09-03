@@ -64,8 +64,8 @@ class OcpiCdrLocation(BaseModel):
         ''',
     )
     name: Annotated[str | None, Field(max_length=255, description='Display name of the location.')] = None
-    address: str = Field(max_length=45, description='Street/block name and house number if available.')
-    city: str = Field(max_length=45, description='City or town.')
+    address: str = Field(min_length=1, max_length=45, description='Street/block name and house number if available.')
+    city: str = Field(min_length=1, max_length=45, description='City or town.')
     postal_code: Annotated[str | None, Field(
         max_length=10,
         description='''
