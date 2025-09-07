@@ -17,8 +17,7 @@ pip install ocpi-pydantic
 Here is a quick example of how to use the models to create an OCPI `Location` object.
 
 ```python
-from ocpi_pydantic.v221.locations.location import OcpiHours, OcpiLocation, OcpiGeoLocation
-from ocpi_pydantic.v221.enums import PowerType, ConnectorType, ConnectorFormat
+from ocpi_pydantic.v221.locations.location import OcpiLocation, OcpiGeoLocation
 
 
 location = OcpiLocation(

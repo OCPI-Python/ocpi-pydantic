@@ -1,7 +1,7 @@
 [project]
 # Basic information
 name = "ocpi-pydantic"
-version = "0.7.34"
+version = "0.8.0"
 
 # Dependencies and requirements
 dependencies = ["pydantic>=2.1,<3"]
