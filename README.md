@@ -1,6 +1,6 @@
 # OCPI Pydantic
 
-Pydantic models for the [Open Charge Point Interface (OCPI)](https://evroaming.org/ocpi/), currently supporting version 2.2.1.
+Pydantic models for the [Open Charge Point Interface (OCPI)](https://evroaming.org/ocpi/), currently supporting OCPI 2.2.1.
 
 This library provides a set of Pydantic models to build OCPI applications in Python, ensuring data validation and type hints.
 
